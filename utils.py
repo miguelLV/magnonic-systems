@@ -353,10 +353,10 @@ class lattice:
         print ('Cantidad incorrecta de constantes magneticas, J, S y D esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, aLambda = self.magnetic_constants
+        J, S, DMI, Kitaev, aLambda = self.magnetic_constants
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
-      bond1 = np.array([np.sqrt(3)*a/2, a/2])
+      bond1, bond2, bond3 = self.bond_vectors
       Lambda = aLambda/a
       A=-5
       for m in range(2*self.Ny):
@@ -373,17 +373,27 @@ class lattice:
               J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
               pos = bond1[0]
               if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
-                  H_kx[m,n] = -S*(A+3*J_3+2*D*np.sin(2*kx*pos))
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) -2*Kitaev[2])
               else:
-                  H_kx[m,n] = -S*(A+3*J_3+2*D*np.sin(2*kx*pos))
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos))-2*Kitaev[2])
             if m-n == 1:
                 pos = bond1[0]
+                kvec = [kx,0]
+                f2k = (Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) + 
+                            Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
                 if m%2 == 0:
-                    H_kx[m,n] = 1*J_3*S
-                    H_kx[n,m] = np.conj(H_kx[m,n])
+                    H_kx[m,n] = 1*J_3*S + f2k
+                    H_kx[n,m] = (H_kx[m,n])
                 else:
-                    H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos))
-                    H_kx[n,m] = np.conj(H_kx[m,n]);
+                    H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
+                    H_kx[n,m] = (H_kx[m,n]);
+            if m-n == self.Ny:
+              kvec = [kx,0]
+              H_kx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
+                            Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+              H_kx[n,m] = H_kx[m,n]
+
+
 
       Hkx = np.block([[H_kx, np.zeros([2*self.Ny,2*self.Ny])],[np.zeros([2*self.Ny,2*self.Ny]), np.conj(H_kx)]])
       
