@@ -379,7 +379,7 @@ class lattice:
             if m-n == 1:
                 pos = bond1[0]
                 kvec = [kx,0]
-                f2k = (Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) + 
+                f2k = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) + 
                             Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
                 if m%2 == 0:
                     H_kx[m,n] = 1*J_3*S + f2k
