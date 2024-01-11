@@ -387,7 +387,7 @@ class lattice:
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
-            if m-n == self.Ny:
+            if m-n == self.Ny-1:
               kvec = [kx,0]
               H_kx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
                             Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
