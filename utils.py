@@ -382,7 +382,7 @@ class lattice:
                 f2k = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) + 
                             Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
                 if m%2 == 0:
-                    H_kx[m,n] = 1*J_3*S + f2k
+                    H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
