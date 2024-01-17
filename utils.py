@@ -373,9 +373,9 @@ class lattice:
               J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
               pos = bond1[0]
               if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) -2*Kitaev[2])
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
               else:
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos))-2*Kitaev[2])
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
             if m-n == 1:
                 pos = bond1[0]
                 kvec = [kx,0]
@@ -387,16 +387,16 @@ class lattice:
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
-            if m-n == self.Ny-1:
-              kvec = [kx,0]
-              H_kx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
-                            Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
-              H_kx[n,m] = np.conj(H_kx[m,n]);
-
-
 
       Hkx = np.block([[H_kx, np.zeros([2*self.Ny,2*self.Ny])],[np.zeros([2*self.Ny,2*self.Ny]), np.conj(H_kx)]])
       
+      for m in range(2*self.Ny):
+          for n in range(2*self.Ny, 4*self.Ny):
+              if m-n == 2*self.Ny:
+                  kvec = [kx,0]
+                  H_kx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
+                                 Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+                  H_kx[n,m] = np.conj(H_kx[m,n]);
       return Hkx
 
 
