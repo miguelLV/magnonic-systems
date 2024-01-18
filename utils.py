@@ -353,18 +353,21 @@ class lattice:
         print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma y aLambda esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, Kitaev, Gamma, aLambda = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, aLambda = self.magnetic_constants
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
+      H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
       bond1, bond2, bond3 = self.bond_vectors
       Lambda = aLambda/a
-      A=-0.5
+      A=-1
       for m in range(2*self.Ny):
           for n in range(2*self.Ny):
             y_pos = self.unit_cell_sites[m].position[1]
             D = DMI
+            Gamma = GAMMA
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
+              Gamma = -GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
             J_3 = J
@@ -384,23 +387,17 @@ class lattice:
                 if m%2 == 0:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
+                    H_anomalo[m,n] = 1j*S*Gamma
+                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
+                    H_anomalo[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
+                                   Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
 
-      Hkx = np.block([[H_kx, np.zeros([2*self.Ny,2*self.Ny])],[np.zeros([2*self.Ny,2*self.Ny]), np.conj(H_kx)]])
+      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
       
-      for m in range(2*self.Ny):
-          for n in range(2*self.Ny, 4*self.Ny):
-              if n-m == 2*self.Ny+1:
-                  kvec = [kx,0]
-                  if m%2 !=0:
-                      Hkx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
-                                     Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
-                      Hkx[n,m] = np.conj(Hkx[m,n]);
-                  else:
-                      Hkx[m,n] = S*1j*Gamma
-                      Hkx[n,m] = np.conj(Hkx[m,n]);
       return Hkx
 
 
