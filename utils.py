@@ -349,16 +349,16 @@ class lattice:
       Ny: numero de celdas unitarias
       """
       
-      if len(self.magnetic_constants) != 5:
-        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, aLambda esperados, recibido: ',
+      if len(self.magnetic_constants) != 6:
+        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma y aLambda esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, Kitaev, aLambda = self.magnetic_constants
+        J, S, DMI, Kitaev, Gamma, aLambda = self.magnetic_constants
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
       bond1, bond2, bond3 = self.bond_vectors
       Lambda = aLambda/a
-      A=-5
+      A=-0.5
       for m in range(2*self.Ny):
           for n in range(2*self.Ny):
             y_pos = self.unit_cell_sites[m].position[1]
@@ -392,11 +392,15 @@ class lattice:
       
       for m in range(2*self.Ny):
           for n in range(2*self.Ny, 4*self.Ny):
-              if m-n == 2*self.Ny:
+              if n-m == 2*self.Ny+1:
                   kvec = [kx,0]
-                  H_kx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
-                                 Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
-                  H_kx[n,m] = np.conj(H_kx[m,n]);
+                  if m%2 !=0:
+                      Hkx[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
+                                     Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+                      Hkx[n,m] = np.conj(Hkx[m,n]);
+                  else:
+                      Hkx[m,n] = S*1j*Gamma
+                      Hkx[n,m] = np.conj(Hkx[m,n]);
       return Hkx
 
 
