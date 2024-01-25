@@ -355,12 +355,13 @@ class lattice:
         print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h y aLambda esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, Kitaev, GAMMA, h, aLambda = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
       bond1, bond2, bond3 = self.bond_vectors
-      Lambda = aLambda/a
+      LambdaJ = aLambdaJ/a
+      LambdaK = aLambdaK/a
       A=-h
       for m in range(2*self.Ny):
           for n in range(2*self.Ny):
@@ -371,13 +372,12 @@ class lattice:
               D = -DMI
               Gamma = GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
-            J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
-            K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
-            K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
+            J_1 = J*np.exp(1-np.sqrt(1+3/4*(LambdaJ**2) * (y_pos**2 + a*(y_pos)/2)))
+            K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
+            K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
             J_3 = J
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
-              J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
               pos = bond1[0]
               if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
                   H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
