@@ -370,11 +370,11 @@ class lattice:
             Gamma = GAMMA
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
-              Gamma = GAMMA
+              Gamma = -GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
-            Kitaev[0] = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
-            Kitaev[1] = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
+            K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
+            K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
             J_3 = J
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
@@ -387,18 +387,18 @@ class lattice:
             if m-n == 1:
                 pos = bond1[0]
                 kvec = [kx,0]
-                f2k = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) + 
-                            Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+                f2k = S*(K0*np.exp(-1j*np.dot(kvec,bond1)) + 
+                            K1*np.exp(-1j*np.dot(kvec,bond2)))
                 if m%2 == 0:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                     H_anomalo[m,n] = 1j*S*Gamma
-                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
+                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
-                    H_anomalo[m,n] = S*(Kitaev[0]*np.exp(-1j*np.dot(kvec,bond1)) - 
-                                   Kitaev[1]*np.exp(-1j*np.dot(kvec,bond2)))
+                    H_anomalo[m,n] = S*(K0*np.exp(-1j*np.dot(kvec,bond1)) - 
+                                   K1*np.exp(-1j*np.dot(kvec,bond2)))
                     H_anomalo[n,m] = np.conj(H_anomalo[m,n])
 
       Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
