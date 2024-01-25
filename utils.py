@@ -393,7 +393,7 @@ class lattice:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                     H_anomalo[m,n] = 1j*S*Gamma
-                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
+                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
