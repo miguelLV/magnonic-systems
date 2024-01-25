@@ -370,7 +370,7 @@ class lattice:
             Gamma = GAMMA
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
-              Gamma = -GAMMA
+              Gamma = GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
             K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
