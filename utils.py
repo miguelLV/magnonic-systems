@@ -370,7 +370,7 @@ class lattice:
             Gamma = GAMMA
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
-              Gamma = -GAMMA
+              Gamma = GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
             Kitaev[0] = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
@@ -393,7 +393,7 @@ class lattice:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                     H_anomalo[m,n] = 1j*S*Gamma
-                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
+                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
