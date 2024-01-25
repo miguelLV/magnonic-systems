@@ -351,8 +351,8 @@ class lattice:
       Ny: numero de celdas unitarias
       """
       
-      if len(self.magnetic_constants) != 7:
-        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h y aLambda esperados, recibido: ',
+      if len(self.magnetic_constants) != 8:
+        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h, aLambdaJ y aLambdaK esperados, recibido: ',
         self.magnetic_constants)
       else:
         J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
