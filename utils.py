@@ -293,7 +293,7 @@ class lattice:
         - ylim: sets the yaxis limits of the plot.
     '''
     
-    def plot_ribbon_dispersion(self, N_dest=None, yindex=0):
+    def plot_ribbon_dispersion(self, N_dest=None, ylim=[0,0]):
         klength = len(self.kpath_ribbon)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
         for k in range(len(self.kpath_ribbon)):
@@ -308,9 +308,10 @@ class lattice:
             order = 2
             width = 1.0
           plt.plot(self.kpath_ribbon*np.sqrt(3)*self.lattice_constant, dispersion[:,n], color=col, zorder = order, linewidth=width)
-        y0 = np.min(dispersion[yindex])
-        y1 = np.max(dispersion[yindex])
-        plt.ylim(y0, y1)
+        if ylim==[0,0]:
+            ylim[0] = np.min(dispersion[0])
+            ylim[1] = np.max(dispersion[0])
+        plt.ylim(ylim[0], ylim[1])
         plt.xlim(self.kpath_ribbon[0], self.kpath_ribbon[-1])
         ax = plt.gca()
         ax.set_xticks([0, np.pi, 2*np.pi])
@@ -392,7 +393,7 @@ class lattice:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                     H_anomalo[m,n] = 1j*S*Gamma
-                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
+                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
@@ -400,7 +401,7 @@ class lattice:
                                    K1*np.exp(-1j*np.dot(kvec,bond2)))
                     H_anomalo[n,m] = np.conj(H_anomalo[m,n])
 
-      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.transpose(H_kx)]])
+      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
       
       return Hkx
 
