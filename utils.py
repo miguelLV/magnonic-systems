@@ -401,7 +401,7 @@ class lattice:
                                    K1*np.exp(-1j*np.dot(kvec,bond2)))
                     H_anomalo[n,m] = np.conj(H_anomalo[m,n])
 
-      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
+      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.transpose(H_kx)]])
       
       return Hkx
 
