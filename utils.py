@@ -309,7 +309,7 @@ class lattice:
             width = 1.0
           plt.plot(self.kpath_ribbon*np.sqrt(3)*self.lattice_constant, dispersion[:,n], color=col, zorder = order, linewidth=width)
         if ylim==[0,0]:
-            ylim[0] = np.min(dispersion[0)
+            ylim[0] = np.min(dispersion[0])
             ylim[1] = np.max(dispersion[0])
         plt.ylim(ylim[0], ylim[1])
         plt.xlim(self.kpath_ribbon[0], self.kpath_ribbon[-1])
