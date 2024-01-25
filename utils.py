@@ -293,7 +293,7 @@ class lattice:
         - ylim: sets the yaxis limits of the plot.
     '''
     
-    def plot_ribbon_dispersion(self, N_dest=None, ylim=[4,6]):
+    def plot_ribbon_dispersion(self, N_dest=None, ylim=[0,0]):
         klength = len(self.kpath_ribbon)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
         for k in range(len(self.kpath_ribbon)):
@@ -308,6 +308,9 @@ class lattice:
             order = 2
             width = 1.0
           plt.plot(self.kpath_ribbon*np.sqrt(3)*self.lattice_constant, dispersion[:,n], color=col, zorder = order, linewidth=width)
+        if ylim==[0,0]:
+            ylim[0] = np.min(dispersion[int(klength/2)])
+            ylim[1] = np.max(dispersion[int(klength/2)])
         plt.ylim(ylim[0], ylim[1])
         plt.xlim(self.kpath_ribbon[0], self.kpath_ribbon[-1])
         ax = plt.gca()
@@ -349,17 +352,17 @@ class lattice:
       Ny: numero de celdas unitarias
       """
       
-      if len(self.magnetic_constants) != 6:
-        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma y aLambda esperados, recibido: ',
+      if len(self.magnetic_constants) != 7:
+        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h y aLambda esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, Kitaev, GAMMA, aLambda = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, h, aLambda = self.magnetic_constants
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
       bond1, bond2, bond3 = self.bond_vectors
       Lambda = aLambda/a
-      A=-1
+      A=-h
       for m in range(2*self.Ny):
           for n in range(2*self.Ny):
             y_pos = self.unit_cell_sites[m].position[1]
@@ -370,6 +373,8 @@ class lattice:
               Gamma = GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
+            Kitaev[0] = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
+            Kitaev[1] = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(Lambda**2) * (y_pos**2 + a*(y_pos)/2)))
             J_3 = J
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
@@ -388,7 +393,7 @@ class lattice:
                     H_kx[m,n] = 1*J_3*S
                     H_kx[n,m] = np.conj(H_kx[m,n])
                     H_anomalo[m,n] = 1j*S*Gamma
-                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
+                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
                 else:
                     H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
                     H_kx[n,m] = np.conj(H_kx[m,n]);
