@@ -83,6 +83,7 @@ class lattice:
         self.ribbon_Hamiltonian = None
         self.ribbon_eigensystem = None
         self.k_probabilities = None
+        self.spectral = None
 
 
 
@@ -335,6 +336,34 @@ class lattice:
       for i, k in enumerate(self.kpath_ribbon):
         self.ribbon_Hamiltonian[i] = k_hamiltonian(k)
       print('Hamiltoniano definido en todo el camino k')
+      
+    def spectral_function(self, Hamiltonian, omega, delta):
+        Ny = self.Ny
+        Hsize = len(Hamiltonian[:,0])
+        argument_matrix = omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
+        green_matrix = np.linalg.inv(argument_matrix)
+        imaginary_matrix = np.imag(green_matrix)
+        result = -(imaginary_matrix)/np.pi
+        
+        return result
+    
+    def set_spectral_function(self, omega_lim, omega_size, delta):
+        k_path = self.kpath_ribbon
+        omega_list = np.linspace(omega_lim[0], omega_lim[1], omega_size)
+        self.spectral = np.zeros((len(k_path), len(omega_list)))
+        for i in range(k_path):
+            Hamiltonian = self.ribbon_Hamiltonian[i]
+            for j, omega in enumerate(omega_list):
+                self.spectral[i,j] = np.trace(self.spectral_function(Hamiltonian, omega, delta))
+                
+    def plot_spectral(self):
+        spectral_size = len(self.spectral[:,0])
+        plt.imshow(np.transpose(self.spectral), origin='lower', aspect='auto', cmap='hot')
+        plt.xlabel(r'$k_x \delta_x$')
+        plt.ylabel(r'$\omega / |J|S$')
+        ax = plt.gca();
+        ax.set_xticks([0, spectral_size/2, spectral_size-1], labels=[r'$-\pi$', r'$0$', r'$\pi$' ]);
+        ax.set_yticks([0, spectral_size/4, 2*spectral_size/4, 3*spectral_size/4, spectral_size-1], labels=[r'$2$', r'$2.5$', r'$3$', r'3.5', r'4' ]);
 
     #########################################
     # Definicion de Hamiltonianos
