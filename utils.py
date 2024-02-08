@@ -303,7 +303,7 @@ class lattice:
           if N_dest != None and n==N_dest: 
             col='r'
             order = 2.5
-            width = 3.0
+            width = 2.0
           else: 
             col='k'
             order = 2
@@ -339,8 +339,9 @@ class lattice:
       
     def spectral_function(self, Hamiltonian, omega, delta):
         Ny = self.Ny
+        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
-        argument_matrix = omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
+        argument_matrix = J*S*omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
         green_matrix = np.linalg.inv(argument_matrix)
         imaginary_matrix = np.imag(green_matrix)
         result = -(imaginary_matrix)/np.pi
