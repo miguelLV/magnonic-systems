@@ -351,7 +351,7 @@ class lattice:
         k_path = self.kpath_ribbon
         omega_list = np.linspace(omega_lim[0], omega_lim[1], omega_size)
         self.spectral = np.zeros((len(k_path), len(omega_list)))
-        for i in range(k_path):
+        for i, k in enumerate(k_path):
             Hamiltonian = self.ribbon_Hamiltonian[i]
             for j, omega in enumerate(omega_list):
                 self.spectral[i,j] = np.trace(self.spectral_function(Hamiltonian, omega, delta))
