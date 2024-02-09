@@ -341,7 +341,7 @@ class lattice:
         Ny = self.Ny
         J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
-        argument_matrix = J*S*omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
+        argument_matrix = omega*np.eye(Hsize)/abs(J*S) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
         green_matrix = np.linalg.inv(argument_matrix)
         imaginary_matrix = np.imag(green_matrix)
         result = -(imaginary_matrix)/np.pi
@@ -357,14 +357,18 @@ class lattice:
             for j, omega in enumerate(omega_list):
                 self.spectral[i,j] = np.trace(self.spectral_function(Hamiltonian, omega, delta))
                 
-    def plot_spectral(self):
-        spectral_size = len(self.spectral[:,0])
+    def plot_spectral(self, omegalim):
+        spectral_size = np.shape(self.spectral)
+        xticks = np.linspace(omegalim[0], omegalim[1], 5)
+        for i, tick in enumerate(xticks):
+            xticks[i] = str(tick)
         plt.imshow(np.transpose(self.spectral), origin='lower', aspect='auto', cmap='hot')
         plt.xlabel(r'$k_x \delta_x$')
         plt.ylabel(r'$\omega / |J|S$')
         ax = plt.gca();
-        ax.set_xticks([0, spectral_size/2, spectral_size-1], labels=[r'$-\pi$', r'$0$', r'$\pi$' ]);
-        ax.set_yticks([0, spectral_size/4, 2*spectral_size/4, 3*spectral_size/4, spectral_size-1], labels=[r'$2$', r'$2.5$', r'$3$', r'3.5', r'4' ]);
+        ax.set_xticks([0, spectral_size[0]/2, spectral_size[0]-1], labels=[r'$0$', r'$\pi$', r'$2\pi$' ]);
+        ax.set_yticks([0, spectral_size[1]/4, 2*spectral_size[1]/4, 3*spectral_size[1]/4,
+                       spectral_size[1]-1], labels = xticks);
 
     #########################################
     # Definicion de Hamiltonianos
