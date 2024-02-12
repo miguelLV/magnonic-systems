@@ -359,6 +359,7 @@ class lattice:
                 
     def plot_spectral(self, omegalim):
         spectral_size = np.shape(self.spectral)
+        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
         xticks = np.linspace(omegalim[0], omegalim[1], 5)
         for i, tick in enumerate(xticks):
             xticks[i] = str(tick)
@@ -369,6 +370,21 @@ class lattice:
         ax.set_xticks([0, spectral_size[0]/2, spectral_size[0]-1], labels=[r'$0$', r'$\pi$', r'$2\pi$' ]);
         ax.set_yticks([0, spectral_size[1]/4, 2*spectral_size[1]/4, 3*spectral_size[1]/4,
                        spectral_size[1]-1], labels = xticks);
+    
+    def kDerivative(self, n):
+        k_path = self.kpath_ribbon
+        klength = len(k_path)
+        dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
+        for k in range(len(self.kpath_ribbon)):
+          dispersion[k] = self.ribbon_eigensystem[k].eigenenergies
+        derivative = np.gradient(dispersion[:,n])
+        return derivative
+    
+    def plot_kderivative(self, n):
+        k_path = self.kpath_ribbon
+        fig, ax = plt.subplots()
+        ax.plot(k_path, self.kDerivative(n))
+            
 
     #########################################
     # Definicion de Hamiltonianos
