@@ -84,6 +84,7 @@ class lattice:
         self.ribbon_eigensystem = None
         self.k_probabilities = None
         self.spectral = None
+        self.DOS = None
 
 
 
@@ -341,7 +342,7 @@ class lattice:
         Ny = self.Ny
         J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
-        argument_matrix = omega*np.eye(Hsize)/abs(J*S) + 1j*delta*np.eye(Hsize) - 2*np.dot(self.PU(Ny),Hamiltonian)
+        argument_matrix = omega*np.eye(Hsize)/abs(J*S) + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian)
         green_matrix = np.linalg.inv(argument_matrix)
         imaginary_matrix = np.imag(green_matrix)
         result = -(imaginary_matrix)/np.pi
@@ -384,6 +385,26 @@ class lattice:
         k_path = self.kpath_ribbon
         fig, ax = plt.subplots()
         ax.plot(k_path, self.kDerivative(n))
+        
+    def set_DOS(self, omegalim):
+        k_path = self.kpath_ribbon
+        klength = len(k_path)
+        spectral = self.spectral
+        omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
+        self.DOS = np.zeros(len(omega))
+        for i, E in enumerate(omega):
+            self.DOS[i] = np.trapz(spectral[:,i], x = k_path)
+    
+    def plot_DOS(self, omegalim):
+        spectral = self.spectral
+        DOS = self.DOS
+        omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
+        plt.plot(DOS, omega)
+        
+
+    
+            
+        
             
 
     #########################################
@@ -426,16 +447,17 @@ class lattice:
               Gamma = GAMMA
               y_pos = self.unit_cell_sites[m-1].position[1]
             J_1 = J*np.exp(1-np.sqrt(1+3/4*(LambdaJ**2) * (y_pos**2 + a*(y_pos)/2)))
+            J_3 = J
             K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
             K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
-            J_3 = J
+            K3 = Kitaev[2]
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
               pos = bond1[0]
               if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
               else:
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
             if m-n == 1:
                 pos = bond1[0]
                 kvec = [kx,0]
@@ -452,9 +474,7 @@ class lattice:
                     H_anomalo[m,n] = S*(K0*np.exp(-1j*np.dot(kvec,bond1)) - 
                                    K1*np.exp(-1j*np.dot(kvec,bond2)))
                     H_anomalo[n,m] = np.conj(H_anomalo[m,n])
-
       Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
-      
       return Hkx
 
 
