@@ -331,16 +331,16 @@ class lattice:
     representing the k_hamiltonian function evaluated in kpath[i].
     '''
     
-    def set_ribbon_hamiltonian(self, k_hamiltonian):
+    def set_ribbon_hamiltonian(self, k_hamiltonian, defParams):
       klength = len(self.kpath_ribbon)
       self.ribbon_Hamiltonian = np.zeros([klength, 4*self.Ny, 4*self.Ny], dtype=complex)
       for i, k in enumerate(self.kpath_ribbon):
-        self.ribbon_Hamiltonian[i] = k_hamiltonian(k)
+        self.ribbon_Hamiltonian[i] = k_hamiltonian(k, defParams)
       print('Hamiltoniano definido en todo el camino k')
       
     def spectral_function(self, Hamiltonian, omega, delta):
         Ny = self.Ny
-        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
         argument_matrix = omega*np.eye(Hsize)/abs(J*S) + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian)
         green_matrix = np.linalg.inv(argument_matrix)
@@ -360,7 +360,7 @@ class lattice:
                 
     def plot_spectral(self, omegalim):
         spectral_size = np.shape(self.spectral)
-        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         xticks = np.linspace(omegalim[0], omegalim[1], 5)
         for i, tick in enumerate(xticks):
             xticks[i] = str(tick)
@@ -419,17 +419,18 @@ class lattice:
     that has a twist deformation which amplitude is characterized by the parameter aLambda.
     '''
 
-    def TwistHamiltonian(self, kx):
+    def TwistHamiltonian(self, kx, defParams):
       """
       Twist strain hamiltonian, the origin of the reference system is in the center
       Ny: numero de celdas unitarias
       """
       
-      if len(self.magnetic_constants) != 8:
-        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h, aLambdaJ y aLambdaK esperados, recibido: ',
+      if len(self.magnetic_constants) != 6:
+        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, y h esperados, recibido: ',
         self.magnetic_constants)
       else:
-        J, S, DMI, Kitaev, GAMMA, h, aLambdaJ, aLambdaK = self.magnetic_constants
+        J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
+      aLambdaJ, aLambdaK = defParams
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
@@ -478,6 +479,72 @@ class lattice:
       return Hkx
 
 
+    '''
+    The UniaxialHamiltonian(kx) method is a function where the input, kx is a float
+    number between 0 and 2pi representing points in the kpath. This function returns
+    a 4Ny x 4Ny numpy array which represents the Hamiltonian matrix for a magnetic lattice
+    that has a twist deformation which amplitude is characterized by the parameter aLambda.
+    '''
+
+    def UniaxialHamiltonian(self, kx, defParam):
+      """
+      Twist strain hamiltonian, the origin of the reference system is in the center
+      Ny: numero de celdas unitarias
+      """
+      
+      if len(self.magnetic_constants) != 6:
+        print ('Cantidad incorrecta de constantes magneticas, J, S, D, Kitaev, Gamma, h, aLambdaJ y aLambdaK esperados, recibido: ',
+        self.magnetic_constants)
+      else:
+        J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
+      Y_size = self.sites[-1].position[1]
+      c = defParam/Y_size
+      H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
+      H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
+      a = self.lattice_constant
+      bond1, bond2, bond3 = self.bond_vectors
+      LambdaJ = aLambdaJ/a
+      LambdaK = aLambdaK/a
+      A=-h
+      for m in range(2*self.Ny):
+          for n in range(2*self.Ny):
+            y_pos = self.unit_cell_sites[m].position[1]
+            D = DMI
+            Gamma = GAMMA
+            if self.unit_cell_sites[m].stype == 1:
+              D = -DMI
+              Gamma = GAMMA
+              y_pos = self.unit_cell_sites[m-1].position[1]
+            J_1 = J*np.exp(1-np.sqrt(1+3/4*(LambdaJ**2) * (y_pos**2 + a*(y_pos)/2)))
+            J_3 = J
+            K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
+            K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
+            K3 = Kitaev[2]
+            if m==n:
+              y_pos = self.unit_cell_sites[m].position[1]
+              pos = bond1[0]
+              if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
+              else:
+                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
+            if m-n == 1:
+                pos = bond1[0]
+                kvec = [kx,0]
+                f2k = S*(K0*np.exp(-1j*np.dot(kvec,bond1)) + 
+                            K1*np.exp(-1j*np.dot(kvec,bond2)))
+                if m%2 == 0:
+                    H_kx[m,n] = 1*J_3*S
+                    H_kx[n,m] = np.conj(H_kx[m,n])
+                    H_anomalo[m,n] = 1j*S*Gamma
+                    H_anomalo[n,m] = -np.conj(H_anomalo[m,n])
+                else:
+                    H_kx[m,n] = 2*S*J_1*(np.cos(kx*pos)) + f2k
+                    H_kx[n,m] = np.conj(H_kx[m,n]);
+                    H_anomalo[m,n] = S*(K0*np.exp(-1j*np.dot(kvec,bond1)) - 
+                                   K1*np.exp(-1j*np.dot(kvec,bond2)))
+                    H_anomalo[n,m] = np.conj(H_anomalo[m,n])
+      Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
+      return Hkx
     #########################################
     # Metodos de diagonalizacion 
     ########################################
