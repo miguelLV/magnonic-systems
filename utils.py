@@ -387,6 +387,8 @@ class lattice:
         k_path = self.kpath_ribbon
         fig, ax = plt.subplots()
         ax.plot(k_path, self.kDerivative(n))
+        plt.xlabel(r'$k_x \delta_x$')
+        plt.ylabel(r'$c_g$')
         
     def set_DOS(self, omegalim):
         k_path = self.kpath_ribbon
@@ -402,6 +404,7 @@ class lattice:
         DOS = self.DOS
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
         plt.plot(DOS, omega)
+        plt.ylabel(r'$\omega / |J|S$')
         
 
     
