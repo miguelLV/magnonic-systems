@@ -124,7 +124,9 @@ class lattice:
           for y in range(2*self.Ny):
             self.lattice_sites[x,y] = site(self.lattice_sites[x-1,y].stype)
             self.lattice_sites[x,y].position = self.lattice_sites[x-1, y].position + np.array([np.sqrt(3)*self.lattice_constant, 0])
-           
+      if origin == 'edge':
+          for i in range(2*self.Ny):
+              self.lattice_sites[0,i].position[1] += -self.lattice_sites[0,0].position[1]
       self.unit_cell_sites=self.lattice_sites[0,:]
     
     '''
@@ -497,14 +499,12 @@ class lattice:
         self.magnetic_constants)
       else:
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
-      Y_size = self.sites[-1].position[1]
+      Y_size = self.unit_cell_sites[-1].position[1] - self.unit_cell_sites[0].position[1]
       c = defParam/Y_size
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
       bond1, bond2, bond3 = self.bond_vectors
-      LambdaJ = aLambdaJ/a
-      LambdaK = aLambdaK/a
       A=-h
       for m in range(2*self.Ny):
           for n in range(2*self.Ny):
@@ -514,19 +514,19 @@ class lattice:
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
               Gamma = GAMMA
-              y_pos = self.unit_cell_sites[m-1].position[1]
-            J_1 = J*np.exp(1-np.sqrt(1+3/4*(LambdaJ**2) * (y_pos**2 + a*(y_pos)/2)))
-            J_3 = J
-            K0 = Kitaev[0]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
-            K1 = Kitaev[1]*np.exp(1-np.sqrt(1+3/4*(LambdaK**2) * (y_pos**2 + a*(y_pos)/2)))
-            K3 = Kitaev[2]
+              #y_pos = self.unit_cell_sites[m-1].position[1]
+            J_1 = J*(1 - c*y_pos/4)
+            J_3 = J*(1 - c*y_pos)
+            K0 = Kitaev[0]*(1 - c*y_pos/4)
+            K1 = Kitaev[1]*(1 - c*y_pos/4)
+            K3 = Kitaev[2]*(1 - c*y_pos)
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
               pos = bond1[0]
               if (m%(2*self.Ny)==0) or (m%(2*self.Ny) == 2*self.Ny-1):
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
+                  H_kx[m,n] = -S*((A+3*J+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
               else:
-                  H_kx[m,n] = -S*((A+3*J_3+2*D*np.sin(2*kx*pos)) + 2*K3)
+                  H_kx[m,n] = -S*((A+3*J+2*D*np.sin(2*kx*pos)) + 2*Kitaev[2])
             if m-n == 1:
                 pos = bond1[0]
                 kvec = [kx,0]
