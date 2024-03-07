@@ -503,7 +503,9 @@ class lattice:
       else:
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
       Y_size = self.unit_cell_sites[-1].position[1] - self.unit_cell_sites[0].position[1]
-      c = defParam/Y_size
+      defParamJ, defParamK = defParam
+      c_J = defParamJ/Y_size
+      c_K = defParamK/Y_size
       H_kx  = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       H_anomalo = np.zeros([2*self.Ny, 2*self.Ny], dtype=complex)
       a = self.lattice_constant
@@ -518,11 +520,11 @@ class lattice:
               D = -DMI
               Gamma = GAMMA
               #y_pos = self.unit_cell_sites[m-1].position[1]
-            J_1 = J*(1 - c*y_pos/4)
-            J_3 = J*(1 - c*y_pos)
-            K0 = Kitaev[0]*(1 - c*y_pos/4)
-            K1 = Kitaev[1]*(1 - c*y_pos/4)
-            K3 = Kitaev[2]*(1 - c*y_pos)
+            J_1 = J*(1 - c_J*y_pos/4)
+            J_3 = J*(1 - c_J*y_pos)
+            K0 = Kitaev[0]*(1 - c_K*y_pos/4)
+            K1 = Kitaev[1]*(1 - c_K*y_pos/4)
+            K3 = Kitaev[2]*(1 - c_K*y_pos)
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
               pos = bond1[0]
