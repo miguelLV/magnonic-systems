@@ -524,11 +524,7 @@ class lattice:
             K0 = Kitaev[0]*(1 - c_K*y_pos/4)
             K1 = Kitaev[1]*(1 - c_K*y_pos/4)
             K3 = Kitaev[2]*(1 - c_K*y_pos)
-            J_1 = J*(1 - c*y_pos/4)
-            J_3 = J*(1 - c*y_pos)
-            K0 = Kitaev[0]*(1 - c*y_pos/4)
-            K1 = Kitaev[1]*(1 - c*y_pos/4)
-            K3 = Kitaev[2]*(1 - c*y_pos)
+
             if m==n:
               y_pos = self.unit_cell_sites[m].position[1]
               pos = bond1[0]
