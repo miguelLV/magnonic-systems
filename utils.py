@@ -515,10 +515,9 @@ class lattice:
           for n in range(2*self.Ny):
             y_pos = self.unit_cell_sites[m].position[1]
             D = DMI
-            Gamma = GAMMA
             if self.unit_cell_sites[m].stype == 1:
               D = -DMI
-              Gamma = GAMMA
+            Gamma = GAMMA*(1 - c_K*y_pos)
             J_1 = J*(1 - c_J*y_pos/4)
             J_3 = J*(1 - c_J*y_pos)
             K0 = Kitaev[0]*(1 - c_K*y_pos/4)
