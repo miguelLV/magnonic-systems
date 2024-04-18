@@ -135,6 +135,7 @@ class lattice:
     '''
     
     def print_unitcell(self):
+      fig, ax = plt.subplots(1,1, layout='constrained') 
       for y in range(2*self.Ny):
         abs_position = self.unit_cell_sites[y].position
         if y < 2*self.Ny-1:
@@ -144,9 +145,9 @@ class lattice:
         if self.unit_cell_sites[y].stype == 0: color='b'
         else: color='r'
         plt.scatter(abs_position[0], abs_position[1], c=color, zorder=2)
-      ax = plt.gca()
-      ax.axis('equal')
-      ax.set_xlim([-1,1])
+      ax.set_axis_off()
+      plt.axis('equal')
+      plt.savefig('unit_cell.svg',format='svg',dpi=300,transparent=True)
       plt.show()
 
     '''
@@ -344,7 +345,7 @@ class lattice:
         Ny = self.Ny
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
-        argument_matrix = omega*np.eye(Hsize)/abs(J*S) + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian)
+        argument_matrix = omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian)
         green_matrix = np.linalg.inv(argument_matrix)
         imaginary_matrix = np.imag(green_matrix)
         result = -(imaginary_matrix)/np.pi
