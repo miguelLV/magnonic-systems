@@ -386,41 +386,5 @@ class Magnon_Phonon:
         plt.ylim(0,3)
         plt.grid()
         plt.show()
-a0=1
-#Phonon parameter
-phirr=1
-phitit=0.5
-phito=0.1
-
-#magnon parameter
-J=-0.13
-S=1
-Sz=1
-#magnon-phonon parameter
-Bz=0.01
-
-PBC="no" #"yes" if you want periodical boundary condition if lattice="edge"
-mgph=[a0,phirr,phitit,phito,J,S,Sz,Bz,PBC]
-
-##Build the system
-mgphsystem=Magnon_Phonon(mgph)
-
-#elastic properties definition
-mgphsystem.density = 1
-mgphsystem.N = 100
-mgphsystem.burgers = np.array([0,0,1]) #Screw dislocation
-mgphsystem.glideN = np.array([0,1,0])
-mgphsystem.poisson = 0.29
-mgphsystem.shear = 77.5
-mgphsystem.lame = 100
-
-
-###what do you want to calculate
-lattice="bulk" #"bulk" or "edge"
-unit_cells=100
-Nk=100 #k-grid
-
-mgphsystem.mag_ph_dis_system_band(Nk)
-print("······················NO VER")
 
 
