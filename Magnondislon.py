@@ -93,6 +93,7 @@ class Magnon_Phonon:
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
+        print(n,b,modk)
         F = (n*np.dot(b, k) + b*np.dot(n, k)-(k*np.dot(n, k)*np.dot(b, k))/(modk**2 *(1-self.poisson)))/(k[0]*modk**2)
         return F
     
