@@ -89,9 +89,9 @@ class Magnon_Phonon:
         return Bper*interaction/np.sqrt(self.S*2*frequency+0.0001)
     
     def F(self, k):
-        k=np.array([k[0],k[1],0])
         if k[0]==0:
             k[0] = 0.0001
+        k=np.array([k[0],k[1],0])
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
