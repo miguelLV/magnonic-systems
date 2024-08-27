@@ -99,7 +99,6 @@ class Magnon_Phonon:
         return F
     
     def m_dis(self, k):
-        k=np.array([k[0],k[1],0])
         F = self.F(k)
         print(F)
         modF = np.linalg.norm(F)
