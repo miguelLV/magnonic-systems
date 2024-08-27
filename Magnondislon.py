@@ -100,10 +100,11 @@ class Magnon_Phonon:
     
     def m_dis(self, k):
         k=np.array([k[0],k[1],0])
-        F = np.linalg.norm(self.F(k))
-        syst_size = self.a0*self.N
+        F = self.F(k)
         print(F)
-        mk = self.density*F**2/syst_size
+        modF = np.linalg.norm(F)
+        syst_size = self.a0*self.N
+        mk = self.density*modF**2/syst_size
         return mk
     
     def Omega_dis(self, k):
