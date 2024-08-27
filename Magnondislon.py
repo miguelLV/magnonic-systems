@@ -127,7 +127,6 @@ class Magnon_Phonon:
         return G
         
     def Gamma_mgdis(self, k):
-        k=np.array([k[0],k[1],0])
         gamma = self.Z_dis(k)*self.Gdis(k, 0, 2)*2*self.Bper + self.Z_dis(k)*self.Gdis(k, 1, 2)*2*self.Bper
         
         return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
