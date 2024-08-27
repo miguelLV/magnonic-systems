@@ -90,6 +90,8 @@ class Magnon_Phonon:
     
     def F(self, k):
         k=np.array([k[0],k[1],0])
+        if k[0]==0:
+            k[0] = 0.0001
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
