@@ -95,7 +95,6 @@ class Magnon_Phonon:
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
-        print(n,b,modk)
         F = (n*np.dot(b, k) + b*np.dot(n, k)-(k*np.dot(n, k)*np.dot(b, k))/(modk**2 *(1-self.poisson)))/(k[0]*modk**2)
         return F
     
@@ -139,8 +138,8 @@ class Magnon_Phonon:
     def Ham_Magnon_phonon_dislon(self, k):
         k=np.array(k)
         #Magnon Hamiltonian
-        Mag_Ham_plus=self.Ham_Magnon(k)
-        Mag_Ham_minus=self.Ham_Magnon(-k)
+        Mag_E_plus = self.J*self.S*(-4+np.cos(np.dot(k,self.A1))+np.cos(np.dot(k,self.A2)))
+        Mag_E_minus = self.J*self.S*(-4+np.cos(np.dot(-k,self.A1))+np.cos(np.dot(-k,self.A2)))
         #Phonon Hamiltonian in k
         Ham=self.Ham_Phonon(k)
         (evals,evec)=self.evals_evec(Ham,"ph")
@@ -158,22 +157,20 @@ class Magnon_Phonon:
         G2=self.Gamma_mgph(self.Bper,k,aux_evec[1],aux_eval[1])
         G2minus=self.Gamma_mgph(self.Bper,k,aux_evec_neg[1],aux_eval_neg[1]).conjugate()
         
-        G3=self.Gamma_mgph(self.Bper,k,aux_evec[2],aux_eval[2])
-        G3minus=self.Gamma_mgph(self.Bper,k,aux_evec_neg[2],aux_eval_neg[2]).conjugate()
         #magnon dislon interactions
         gammaPlus = self.Gamma_mgdis(k)
         gammaMinus = gammaPlus.conjugate()
         #dislon matrix ham element
         omega = self.Omega_dis(k)
         
-        Ham_mag_ph_dis = np.array([[Mag_Ham_plus[0,0], 0, G1.conjugate(), G2.conjugate(), 0, 0, 0, 0, G1.conjugate(), G2.conjugate(), gammaMinus, gammaMinus],
-                                  [0 , Mag_Ham_minus[1,1], 0, 0, gammaPlus, gammaPlus, 0, 0, 0, 0, 0, 0],
+        Ham_mag_ph_dis = np.array([[Mag_E_plus, 0, G1.conjugate(), G2.conjugate(), 0, 0, 0, 0, G1.conjugate(), G2.conjugate(), gammaMinus, gammaMinus],
+                                  [0 , Mag_E_minus, 0, 0, gammaPlus, gammaPlus, 0, 0, 0, 0, 0, 0],
                                   [G1, 0, aux_eval[0], 0, 0, 0, 0, G1minus.conjugate(), 0, 0, 0, 0],
                                   [G2, 0, 0, aux_eval[1], 0, 0, 0, G2minus.conjugate(), 0, 0, 0, 0],
                                   [0, gammaMinus, 0, 0, omega, 0, gammaMinus, 0, 0, 0, 0, 0],
                                   [0, gammaMinus, 0, 0, omega, 0, gammaMinus, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, gammaPlus, gammaPlus, Mag_Ham_plus[0,0], 0, 0, 0, 0, 0],
-                                  [0, 0, G1minus, G2minus, 0, 0, 0, Mag_Ham_minus[1,1], 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, gammaPlus, gammaPlus, Mag_E_plus, 0, 0, 0, 0, 0],
+                                  [0, 0, G1minus, G2minus, 0, 0, 0, Mag_E_minus, 0, 0, 0, 0, 0],
                                   [G1, 0, 0, 0, 0, 0, 0, G1minus.conjugate(), aux_eval_neg[0], 0, 0, 0],
                                   [G2, 0, 0, 0, 0, 0, 0, G2minus.conjugate(), 0, aux_eval_neg[1], 0, 0],
                                   [gammaPlus, 0, 0, 0, 0, 0, 0, gammaPlus, 0, 0, omega, 0],
