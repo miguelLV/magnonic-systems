@@ -102,6 +102,7 @@ class Magnon_Phonon:
         k=np.array([k[0],k[1],0])
         F = np.linalg.norm(self.F(k))
         syst_size = self.a0*self.N
+        print(F)
         mk = self.density*F**2/syst_size
         return mk
     
