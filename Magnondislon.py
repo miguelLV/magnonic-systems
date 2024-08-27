@@ -100,19 +100,18 @@ class Magnon_Phonon:
     
     def m_dis(self, k):
         F = self.F(k)
-        print(F)
         modF = np.linalg.norm(F)
         syst_size = self.a0*self.N
         mk = self.density*modF**2/syst_size
         return mk
     
     def Omega_dis(self, k):
+        F = self.F(k)
         k=np.array([k[0],k[1],0])
         modk = np.linalg.norm(k)
         lame = self.lame
         shear = self.shear 
         dens = self.density
-        F = self.F(k)
         modF = np.linalg.norm(F)
         omega = np.sqrt(((lame+shear)*np.dot(k, F)**2 + shear*modk**2 *modF**2)/(dens*modF))
         return omega 
