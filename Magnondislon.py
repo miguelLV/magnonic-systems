@@ -123,7 +123,6 @@ class Magnon_Phonon:
     def Gdis(self, k, alpha, beta):
         #alpha and beta are polarizations, alpha/beta = 0 is x, alpha/beta = 1 is y
         #alpha/beta = 2 is z
-        k=np.array([k[0],k[1],0])
         G = self.F(k)[alpha]*np.sin(self.a0*k[beta]) + self.F(k)[beta]*np.sin(self.a0*k[alpha])
         return G
         
