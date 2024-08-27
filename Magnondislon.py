@@ -117,7 +117,6 @@ class Magnon_Phonon:
         return omega 
     
     def Z_dis(self, k):
-        k=np.array([k[0],k[1],0])
         zk = np.sqrt(1/(2*self.m_dis(k)*self.Omega_dis(k)))
         return zk
     
