@@ -25,8 +25,8 @@ class Magnon_Phonon:
         self.shear = None
         self.lame = None
         #Real and reciprocal basis vector
-        self.A1 = self.a0*np.array([1,0])
-        self.A2 = self.a0*np.array([0,1])
+        self.A1 = self.a0*np.array([1,0,0])
+        self.A2 = self.a0*np.array([0,1,0])
         self.B1 = ((2*np.pi)/(self.a0))*np.array([1, 0])
         self.B2 = ((2*np.pi)/(self.a0))*np.array([0,-1])
         #Neighbors positions
