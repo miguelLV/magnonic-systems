@@ -344,6 +344,7 @@ class Magnon_Phonon:
         path3.remove(path3[0])
         #path5=self.getEquidistantPoints(self.M1,self.G, N_k)
         path=np.concatenate((path1,path2,path3),axis=0)
+        print(path)
   
         #path=path1
         x=[]
