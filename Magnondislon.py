@@ -14,7 +14,9 @@ class Magnon_Phonon:
         self.density = None         #Mass density
         self.N = None               #Number of sites
         self.Bper=mgph_param[7]     #Perpendicular magnetoelastic constant
-        self.PBC=mgph_param[8]      #Periodic Boundary Conditions
+        self.Bpar = mgph_param[8]   #Parallel magnetoelastic constant
+        self.PBC=mgph_param[9]      #Periodic Boundary Conditions
+        self.theta = None           #Angle deviation of the ground state from the z axis
         #Dislocation info
         self.burgers = None
         self.glideN = None
@@ -126,8 +128,13 @@ class Magnon_Phonon:
         G = self.F(k)[alpha]*np.sin(self.a0*k[beta]) + self.F(k)[beta]*np.sin(self.a0*k[alpha])
         return G
         
-    def Gamma_mgdis(self, k):
-        gamma = self.Z_dis(k)*self.Gdis(k, 0, 2)*2*self.Bper + self.Z_dis(k)*self.Gdis(k, 1, 2)*2*self.Bper
+    def Gamma1_mgdis(self, k, theta):
+        gamma = self.Z_dis(k)*self.Gdis(k, 0, 1)*2*self.Bper*np.sin(theta) + self.Z_dis(k)*self.Gdis(k, 2, 2)*2*self.Bpar*np.cos(theta)*np.sin(theta)
+        
+        return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
+    
+    def Gamma2_mgdis(self, k, theta):
+        gamma = self.Z_dis(k)*self.Gdis(k, 0, 1)*2*self.Bper*np.sin(theta) - self.Z_dis(k)*self.Gdis(k, 2, 2)*2*self.Bpar*np.cos(theta)*np.sin(theta)
         
         return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
     
@@ -155,23 +162,25 @@ class Magnon_Phonon:
         G2minus=self.Gamma_mgph(self.Bper,k,aux_evec_neg[1],aux_eval_neg[1]).conjugate()
         
         #magnon dislon interactions
-        gammaPlus = self.Gamma_mgdis(k)
-        gammaMinus = gammaPlus.conjugate()
+        gamma1Plus = self.Gamma1_mgdis(k, self.theta)
+        gamma1Minus = gamma1Plus.conjugate()
+        gamma2Plus = self.Gamma2_mgdis(k, self.theta)
+        gamma2Minus = gamma2Plus.conjugate()
         #dislon matrix ham element
         omega = self.Omega_dis(k)
         
-        Ham_mag_ph_dis = np.array([[Mag_E_plus, 0, G1.conjugate(), G2.conjugate(), 0, 0, 0, 0, G1.conjugate(), G2.conjugate(), gammaMinus, gammaMinus],
-                                  [0 , Mag_E_minus, 0, 0, gammaPlus, gammaPlus, 0, 0, 0, 0, 0, 0],
+        Ham_mag_ph_dis = np.array([[Mag_E_plus, 0, G1.conjugate(), G2.conjugate(), 0, 0, 0, 0, G1.conjugate(), G2.conjugate(), gamma2Minus, gamma2Minus],
+                                  [0 , Mag_E_minus, 0, 0, gamma2Plus, gamma2Plus, 0, 0, 0, 0, 0, 0],
                                   [G1, 0, aux_eval[0], 0, 0, 0, 0, G1minus.conjugate(), 0, 0, 0, 0],
                                   [G2, 0, 0, aux_eval[1], 0, 0, 0, G2minus.conjugate(), 0, 0, 0, 0],
-                                  [0, gammaMinus, 0, 0, omega, 0, gammaMinus, 0, 0, 0, 0, 0],
-                                  [0, gammaMinus, 0, 0, omega, 0, gammaMinus, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, gammaPlus, gammaPlus, Mag_E_plus, 0, 0, 0, 0, 0],
+                                  [0, gamma1Minus, 0, 0, omega, 0, gamma2Minus, 0, 0, 0, 0, 0],
+                                  [0, gamma1Minus, 0, 0, omega, 0, gamma2Minus, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, gamma1Plus, gamma1Plus, Mag_E_plus, 0, 0, 0, 0, 0],
                                   [0, 0, G1minus, G2minus, 0, 0, 0, Mag_E_minus, 0, 0, 0, 0, 0],
                                   [G1, 0, 0, 0, 0, 0, 0, G1minus.conjugate(), aux_eval_neg[0], 0, 0, 0],
                                   [G2, 0, 0, 0, 0, 0, 0, G2minus.conjugate(), 0, aux_eval_neg[1], 0, 0],
-                                  [gammaPlus, 0, 0, 0, 0, 0, 0, gammaPlus, 0, 0, omega, 0],
-                                  [gammaPlus, 0, 0, 0, 0, 0, 0, gammaPlus, 0, 0, 0, omega]])
+                                  [gamma1Plus, 0, 0, 0, 0, 0, 0, gamma2Plus, 0, 0, omega, 0],
+                                  [gamma1Plus, 0, 0, 0, 0, 0, 0, gamma2Plus, 0, 0, 0, omega]])
         return Ham_mag_ph_dis
         
     
