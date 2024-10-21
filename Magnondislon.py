@@ -46,7 +46,7 @@ class Magnon_Phonon:
     #k-path maker function
     def getEquidistantPoints(self,p1, p2, n):
         #creating a k-path
-        return [(self.lerp(p1[0],p2[0],1./n*i), self.lerp(p1[1],p2[1],1./n*i)) for i in range(n+1)]
+        return [(self.lerp(p1[0],p2[0],1./n*i), self.lerp(p1[1],p2[1],1./n*i), 0) for i in range(n+1)]
     def KAB(self,alpha,RB):
         #Spring Matrices with a rotation
         a=self.phir*np.cos(alpha)**2+self.phiti*np.sin(alpha)**2                                   
