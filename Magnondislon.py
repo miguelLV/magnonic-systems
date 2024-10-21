@@ -176,7 +176,7 @@ class Magnon_Phonon:
                                   [0, gamma1Minus, 0, 0, omega, 0, gamma2Minus, 0, 0, 0, 0, 0],
                                   [0, gamma1Minus, 0, 0, omega, 0, gamma2Minus, 0, 0, 0, 0, 0],
                                   [0, 0, 0, 0, gamma1Plus, gamma1Plus, Mag_E_plus, 0, 0, 0, 0, 0],
-                                  [0, 0, G1minus, G2minus, 0, 0, 0, Mag_E_minus, 0, 0, 0, 0, 0],
+                                  [0, 0, G1minus, G2minus, 0, 0, 0, Mag_E_minus, G1minus, G2minus, gamma1Minus, gamma1Minus],
                                   [G1, 0, 0, 0, 0, 0, 0, G1minus.conjugate(), aux_eval_neg[0], 0, 0, 0],
                                   [G2, 0, 0, 0, 0, 0, 0, G2minus.conjugate(), 0, aux_eval_neg[1], 0, 0],
                                   [gamma1Plus, 0, 0, 0, 0, 0, 0, gamma2Plus, 0, 0, omega, 0],
