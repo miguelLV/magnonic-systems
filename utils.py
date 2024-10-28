@@ -301,10 +301,12 @@ class lattice:
     def plot_ribbon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0]):
         klength = len(self.kpath_ribbon)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
+        if type(N_dest)=='int':
+            N_dest = [N_dest]
         for k in range(len(self.kpath_ribbon)):
           dispersion[k] = self.ribbon_eigensystem[k].eigenenergies
         for n in range(2*self.Ny):
-          if N_dest != None and n==N_dest: 
+          if N_dest != None and (n in N_dest): 
             col='r'
             order = 2.5
             width = 2.0
@@ -550,6 +552,9 @@ class lattice:
                     H_anomalo[n,m] = np.conj(H_anomalo[m,n])
       Hkx = np.block([[H_kx, H_anomalo],[self.HermitianConjugate(H_anomalo), np.conj(H_kx)]])
       return Hkx
+    
+    def Ham_magnon(self,):
+       a
     #########################################
     # Metodos de diagonalizacion 
     ########################################
