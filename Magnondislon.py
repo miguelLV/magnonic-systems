@@ -16,6 +16,7 @@ class Magnon_Phonon:
         self.Bper=mgph_param[7]     #Perpendicular magnetoelastic constant
         self.Bpar = mgph_param[8]   #Parallel magnetoelastic constant
         self.PBC=mgph_param[9]      #Periodic Boundary Conditions
+        self.h = mgph_param[10]
         self.theta = None           #Angle deviation of the ground state from the z axis
         #Dislocation info
         self.burgers = None
@@ -142,8 +143,8 @@ class Magnon_Phonon:
     def Ham_Magnon_phonon_dislon(self, k):
         k=np.array(k)
         #Magnon Hamiltonian
-        Mag_E_plus = self.J*self.S*(-4+np.cos(np.dot(k,self.A1))+np.cos(np.dot(k,self.A2)))
-        Mag_E_minus = self.J*self.S*(-4+np.cos(np.dot(-k,self.A1))+np.cos(np.dot(-k,self.A2)))
+        Mag_E_plus = self.J*self.S*(-4+np.cos(np.dot(k,self.A1))+np.cos(np.dot(k,self.A2))) + self.h
+        Mag_E_minus = self.J*self.S*(-4+np.cos(np.dot(-k,self.A1))+np.cos(np.dot(-k,self.A2))) + self.h
         #Phonon Hamiltonian in k
         Ham=self.Ham_Phonon(k)
         (evals,evec)=self.evals_evec(Ham,"ph")
