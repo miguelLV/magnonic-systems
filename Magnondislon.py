@@ -116,7 +116,6 @@ class Magnon_Phonon:
         shear = self.shear 
         dens = self.density
         modF = np.linalg.norm(F)
-        print(modF,'     ',modk)
         omega = np.sqrt(((lame+shear)*np.dot(k, F)**2 + shear*modk**2 *modF**2)/(dens*modF+0.001))
         return omega 
     
