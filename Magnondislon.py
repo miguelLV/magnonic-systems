@@ -381,6 +381,7 @@ class Magnon_Phonon:
         x0=0
         for k in path:
             Ham=self.Ham_Magnon_phonon_dislon(k)
+            print(Ham)
             [evals,evec]=self.evals_evec(Ham,"mg")#+self.Ham_auxiliar*np.identity(4),"ph") 
             index=np.argsort(evals.real)
             E.append(evals.real[index])
