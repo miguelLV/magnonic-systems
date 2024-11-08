@@ -378,7 +378,7 @@ class Magnon_Phonon:
         
         self.M=self.B1*0.5+self.B2*0.5
         self.X=self.B1*0.5
-        self.G=np.array([0.001,0,0])
+        self.G=np.array([0,0,0])
         path1=self.getEquidistantPoints(self.G,self.X, N_k)
         path2=self.getEquidistantPoints(self.X,self.M, N_k)
         path3=self.getEquidistantPoints(self.M,self.G, N_k)
@@ -391,7 +391,6 @@ class Magnon_Phonon:
         x0=0
         for k in path:
             Ham=self.Ham_Magnon_phonon_dislon(k)
-            print(Ham)
             [evals,evec]=self.evals_evec(Ham,"mg")#+self.Ham_auxiliar*np.identity(4),"ph") 
             index=np.argsort(evals.real)
             E.append(evals.real[index])
@@ -400,7 +399,6 @@ class Magnon_Phonon:
         E=np.array(E)
         for i in range(len(E.T)):
             plt.plot(x,E.T[i])
-        plt.ylim(0,3)
         plt.grid()
         plt.show()
 
