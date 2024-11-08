@@ -95,7 +95,7 @@ class Magnon_Phonon:
         if k[0]==0:
             q = 0.0001
         if k.all()==0:
-            return 0
+            return np.array([0,0,0])
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
