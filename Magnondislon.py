@@ -173,11 +173,9 @@ class Magnon_Phonon:
         
         #magnon dislon interactions
         gamma1Plus = self.Gamma1_mgdis(k, self.theta)
-        print(gamma1Plus)
         gamma1Minus = gamma1Plus.conjugate()
         gamma2Plus = self.Gamma2_mgdis(k, self.theta)
         gamma2Minus = gamma2Plus.conjugate()
-        print(gamma2Plus)
         #dislon matrix ham element
         omega = self.Omega_dis(k)
         
