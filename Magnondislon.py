@@ -94,7 +94,7 @@ class Magnon_Phonon:
     def F(self, k):
         if k[0]==0:
             q = 0.0001
-        if k.all()==0:
+        if k.all(0):
             return np.array([])
         n = self.glideN
         b = self.burgers
