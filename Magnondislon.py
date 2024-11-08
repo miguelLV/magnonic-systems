@@ -95,10 +95,11 @@ class Magnon_Phonon:
         if k[0]==0:
             q = 0.0001
         if k.all(0):
-            return np.array([])
+            return np.array([0,0,0])
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
+        q=k[0]
         F = (n*np.dot(b, k) + b*np.dot(n, k)-(k*np.dot(n, k)*np.dot(b, k))/(modk**2 *(1-self.poisson)))/(q*modk**2)
         return F
     
