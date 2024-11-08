@@ -95,7 +95,7 @@ class Magnon_Phonon:
         if k[0]==0:
             q = 0.0001
         if k.all()==0:
-            return np.array([0,0,0])
+            return np.array([])
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
@@ -110,6 +110,8 @@ class Magnon_Phonon:
         return mk
     
     def Omega_dis(self, k):
+        if k.all()==0:
+            return 0
         F = self.F(k)
         modk = np.linalg.norm(k)
         print(modk)
@@ -118,11 +120,11 @@ class Magnon_Phonon:
         dens = self.density
         modF = np.linalg.norm(F)
         omega = np.sqrt(((lame+shear)*np.dot(k, F)**2 + shear*modk**2 *modF**2)/(dens*modF+0.001))
-        if k.all()==0:
-            return 0
+        
         return omega 
     
     def Z_dis(self, k):
+
         zk = np.sqrt(1/(2*self.m_dis(k)*self.Omega_dis(k)))
         return zk
     
@@ -133,11 +135,15 @@ class Magnon_Phonon:
         return G
         
     def Gamma1_mgdis(self, k, theta):
+        if k.all()==0:
+            return 0
         gamma = self.Z_dis(k)*self.Gdis(k, 0, 1)*2*self.Bper*np.sin(theta) + self.Z_dis(k)*self.Gdis(k, 2, 2)*2*self.Bpar*np.cos(theta)*np.sin(theta)
         
         return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
     
     def Gamma2_mgdis(self, k, theta):
+        if k.all()==0:
+            return 0
         gamma = self.Z_dis(k)*self.Gdis(k, 0, 1)*2*self.Bper*np.sin(theta) - self.Z_dis(k)*self.Gdis(k, 2, 2)*2*self.Bpar*np.cos(theta)*np.sin(theta)
         
         return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
