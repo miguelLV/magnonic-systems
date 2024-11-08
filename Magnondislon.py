@@ -94,7 +94,7 @@ class Magnon_Phonon:
     def F(self, k):
         if k[0]==0:
             q = 0.0001
-        if k.all(0):
+        if k[0]==0 and k[1]==0:
             return np.array([0,0,0])
         n = self.glideN
         b = self.burgers
@@ -111,8 +111,8 @@ class Magnon_Phonon:
         return mk
     
     def Omega_dis(self, k):
-        print(k.all(0))
-        if k.all(0):
+
+        if k[0]==0 and k[1]==0:
             return 0
         F = self.F(k)
         print(F)
