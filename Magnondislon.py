@@ -209,6 +209,7 @@ class Magnon_Phonon:
         (evals,evec)=self.evals_evec(Hamneg,"ph")
         aux_eval_neg=evals
         aux_evec_neg=evec
+        print(aux_eval_neg)
         
         #mgph interactions
         G1=self.Gamma_mgph(self.Bper,k,aux_evec[0],aux_eval[0])
