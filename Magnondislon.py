@@ -111,12 +111,13 @@ class Magnon_Phonon:
     def Omega_dis(self, k):
         F = self.F(k)
         k=np.array([k[0],k[1],0])
+        print(k)
         modk = np.linalg.norm(k)
+        print(modk)
         lame = self.lame
         shear = self.shear 
         dens = self.density
         modF = np.linalg.norm(F)
-        print(modk)
         omega = np.sqrt(((lame+shear)*np.dot(k, F)**2 + shear*modk**2 *modF**2)/(dens*modF+0.001))
         if k.all()==0:
             return 0
