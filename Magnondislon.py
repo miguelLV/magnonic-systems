@@ -378,7 +378,7 @@ class Magnon_Phonon:
         
         self.M=self.B1*0.5+self.B2*0.5
         self.X=self.B1*0.5
-        self.G=np.array([0,0,0])
+        self.G=np.array([0.001,0,0])
         path1=self.getEquidistantPoints(self.G,self.X, N_k)
         path2=self.getEquidistantPoints(self.X,self.M, N_k)
         path3=self.getEquidistantPoints(self.M,self.G, N_k)
