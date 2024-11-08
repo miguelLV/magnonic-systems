@@ -111,6 +111,7 @@ class Magnon_Phonon:
         return mk
     
     def Omega_dis(self, k):
+        print(k.all(0))
         if k.all(0):
             return 0
         F = self.F(k)
