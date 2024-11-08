@@ -111,6 +111,7 @@ class Magnon_Phonon:
     def Omega_dis(self, k):
         F = self.F(k)
         k=np.array([k[0],k[1],0])
+        print(k[0])
         print(k)
         modk = np.linalg.norm(k)
         print(modk)
