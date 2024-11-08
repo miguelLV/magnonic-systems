@@ -93,12 +93,13 @@ class Magnon_Phonon:
     
     def F(self, k):
         if k[0]==0:
-            k[0] = 0.0001
-        k=np.array([k[0],k[1],0])
+            q = 0.0001
+        if k.all()==0:
+            return 0
         n = self.glideN
         b = self.burgers
         modk = np.linalg.norm(k)
-        F = (n*np.dot(b, k) + b*np.dot(n, k)-(k*np.dot(n, k)*np.dot(b, k))/(modk**2 *(1-self.poisson)))/(k[0]*modk**2)
+        F = (n*np.dot(b, k) + b*np.dot(n, k)-(k*np.dot(n, k)*np.dot(b, k))/(modk**2 *(1-self.poisson)))/(q*modk**2)
         return F
     
     def m_dis(self, k):
@@ -110,9 +111,6 @@ class Magnon_Phonon:
     
     def Omega_dis(self, k):
         F = self.F(k)
-        k=np.array([k[0],k[1],0])
-        print(k[0])
-        print(k)
         modk = np.linalg.norm(k)
         print(modk)
         lame = self.lame
@@ -146,7 +144,6 @@ class Magnon_Phonon:
     
     
     def Ham_Magnon_phonon_dislon(self, k):
-        k=np.array(k)
         #Magnon Hamiltonian
         Mag_E_plus = self.J*self.S*(-4+np.cos(np.dot(k,self.A1))+np.cos(np.dot(k,self.A2))) + self.h
         Mag_E_minus = self.J*self.S*(-4+np.cos(np.dot(-k,self.A1))+np.cos(np.dot(-k,self.A2))) + self.h
@@ -194,7 +191,6 @@ class Magnon_Phonon:
         
         #Magnon Hamiltonian
         Mag_Ham=self.Ham_Magnon(k)
-        k=np.array(k)
         
         #Phonon Hamiltonian in k
         Ham=self.Ham_Phonon(k)
