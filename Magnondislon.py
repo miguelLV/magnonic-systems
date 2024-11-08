@@ -114,9 +114,7 @@ class Magnon_Phonon:
         if k.all(0):
             return 0
         F = self.F(k)
-        print(F)
         modk = np.linalg.norm(k)
-        print(modk)
         lame = self.lame
         shear = self.shear 
         dens = self.density
