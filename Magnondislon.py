@@ -117,6 +117,8 @@ class Magnon_Phonon:
         dens = self.density
         modF = np.linalg.norm(F)
         omega = np.sqrt(((lame+shear)*np.dot(k, F)**2 + shear*modk**2 *modF**2)/(dens*modF+0.001))
+        if k==[0,0,0] or k==np.array([0,0,0]):
+            return 0
         return omega 
     
     def Z_dis(self, k):
