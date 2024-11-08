@@ -139,7 +139,7 @@ class Magnon_Phonon:
         if k[0]==0 and k[1]==0:
             return 0
         gamma = self.Z_dis(k)*self.Gdis(k, 0, 1)*2*self.Bper*np.sin(theta) + self.Z_dis(k)*self.Gdis(k, 2, 2)*2*self.Bpar*np.cos(theta)*np.sin(theta)
-        
+        print(self.Z_dis(k))
         return 1j*gamma/(self.a0**4*np.sqrt(2*self.S))
     
     def Gamma2_mgdis(self, k, theta):
