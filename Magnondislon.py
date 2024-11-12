@@ -281,7 +281,7 @@ class Magnon_Phonon:
                 evals.append(L[i,i].real)
                 evecs.append(np.array(T[:,i].T)[0])
             return [np.array(evals),np.array(evecs)]
-    def phonon_system_band(self,unitcell,N_k):
+    def phonon_system_band(self,N_k):
         
         self.M=self.B1*0.5+self.B2*0.5
         self.X=self.B1*0.5
@@ -299,7 +299,7 @@ class Magnon_Phonon:
         E=[]
         x0=0
         for k in path:
-            Ham=self.Ham_Phonon(10,k)
+            Ham=self.Ham_Phonon(k)
             [evals,evec]=self.evals_evec(Ham,"ph")#+self.Ham_auxiliar*np.identity(4),"ph")    
             index=np.argsort(evals.real)
             E.append(evals.real[index])
