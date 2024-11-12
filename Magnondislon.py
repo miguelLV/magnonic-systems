@@ -397,6 +397,7 @@ class Magnon_Phonon:
         E=np.array(E)
         for i in range(len(E.T)):
             plt.plot(x,E.T[i])
+        plt.ylim(bottom=0)
         plt.grid()
         plt.show()
 
