@@ -859,7 +859,6 @@ class dislon_lattice:
                 self.ribbon_eigensystem[i] = eigensystem()
                 self.ribbon_eigensystem[i].eigenenergies = eigen
                 self.ribbon_eigensystem[i].eigenvectors = eigvec
-                
         def mag_ph_dis_system_band(self, N_k):
             
             self.M=self.B1*0.5
