@@ -850,7 +850,8 @@ class dislon_lattice:
         self.Hamiltonian = np.zeros([klength, 12, 12], dtype=complex)
         
         for i,k in enumerate(self.kpath):
-            self.Hamiltonian[i] = Ham_Magnon_phonon_dislon(self, k)
+            self.Hamiltonian[i] = self.Ham_Magnon_phonon_dislon(self, k)
+            
     def set_eigensystem(self, method='colpa'):
         klength = len(self.kpath)
         self.eigensystem = np.zeros([klength], dtype=eigensystem)
