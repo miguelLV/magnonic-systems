@@ -643,7 +643,7 @@ class dislon_lattice:
     def phi_phonon(self, k):
         v_t = np.sqrt(self.shear/self.density)
         v_l = np.sqrt((2*self.shear+self.lame)/self.density)
-        V = np.diag([v_l**2, v_t**2, v_t**2],dtype=complex)
+        V = np.diag([v_l**2, v_t**2, v_t**2])
         modk=np.norm(k)
         Phi = 2*V-(1-np.exp(-1j*2*modk*self.a0))*np.matmul(np.array([0,1,0],[0,0,0],[0,0,0]))-(1-np.exp(1j*2*modk*self.a0))*np.matmul(np.array([0,0,0],[1,0,0],[0,0,0]))
         return Phi
