@@ -632,6 +632,7 @@ class dislon_lattice:
         #Eigensystem along k-path
         self.Eigensystem = None
         self.kpath = None
+        self.phononEigensystem = None
         #k-path maker function
     def lerp(self,v0, v1, i):
         return v0 + i * (v1 - v0)
@@ -639,6 +640,13 @@ class dislon_lattice:
     def getEquidistantPoints(self,p1, p2, n):
         #creating a k-path
         return [(self.lerp(p1[0],p2[0],1./n*i), self.lerp(p1[1],p2[1],1./n*i), 0) for i in range(n+1)]
+    def phi_phonon(self, k):
+        v_t = np.sqrt(self.shear/self.density)
+        v_l = np.sqrt((2*self.shear+self.lame)/self.density)
+        V = np.diag([v_l**2, v_t**2, v_t**2],dtype=complex)
+        modk=np.norm(k)
+        Phi = 2*V-(1-np.exp(-1j*2*modk*self.a0))*np.matmul(np.array([0,1,0],[0,0,0],[0,0,0]))-(1-np.exp(1j*2*modk*self.a0))*np.matmul(np.array([0,0,0],[1,0,0],[0,0,0]))
+        return Phi
     def KAB(self,alpha):
         #Spring Matrices with a rotation
         a=self.phir*np.cos(alpha)**2+self.phiti*np.sin(alpha)**2                                   
@@ -860,6 +868,40 @@ class dislon_lattice:
             self.ribbon_eigensystem[i] = eigensystem()
             self.ribbon_eigensystem[i].eigenenergies = eigen
             self.ribbon_eigensystem[i].eigenvectors = eigvec
+    def set_phonon_eigensystem(self, method='colpa'):
+        klength = len(self.kpath)
+        self.phonon_eigensystem = np.zeros([klength], dtype=eigensystem)
+        for i,k in enumerate(self.kpath):
+            eigen, eigvec = self.colpa_k(self.phi_phonon(k))
+            self.phonon_eigensystem[i] = eigensystem()
+            self.phonon_eigensystem[i].eigenenergies = np.sqrt(eigen)
+            self.phonon_eigensystem[i].eigenvectors = eigvec
+    def plot_phonon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], linewidth=2.0):
+        klength = len(self.kpath_ribbon)
+        dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
+        if type(N_dest)=='int':
+            N_dest = [N_dest]
+        for k in range(len(self.kpath_ribbon)):
+          dispersion[k] = self.phonon_eigensystem[k].eigenenergies
+        for n in range(2*self.Ny):
+          if N_dest != None and (n in N_dest): 
+            col='r'
+            order = 2.5
+            width = linewidth
+          else: 
+            col='k'
+            order = 2
+            width = 1.0
+          plt.plot(self.kpath, dispersion[:,n], color=col, zorder = order, linewidth=width)
+        y0 = np.min(dispersion[yindex])
+        y1 = np.max(dispersion[yindex])
+        if ylim!=[0,0]:
+            y0 = ylim[0]
+            y1 = ylim[1]
+        plt.ylim(y0, y1)
+        plt.xlim(self.kpath[0], self.kpath[-1])
+        plt.show()
+    
     def mag_ph_dis_system_band(self, N_k):
         
         self.M=self.B1*0.5
