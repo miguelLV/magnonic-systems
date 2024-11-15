@@ -887,7 +887,7 @@ class dislon_lattice:
         for k in range(len(self.kpath)):
           dispersion[k] = self.phonon_eigensystem[k].eigenenergies
         for i in range(3):
-            plt.plot(self.kpath, dispersion[:,])
+            plt.plot(dispersion[:,])
         print(dispersion)
         plt.show()
     
