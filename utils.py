@@ -888,7 +888,6 @@ class dislon_lattice:
           dispersion[k] = self.phonon_eigensystem[k].eigenenergies
         for i in range(3):
             plt.plot(dispersion[:,i])
-        print(dispersion)
         plt.show()
     
     def mag_ph_dis_system_band(self, N_k):
