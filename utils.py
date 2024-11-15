@@ -873,7 +873,7 @@ class dislon_lattice:
             self.ribbon_eigensystem[i].eigenvectors = eigvec
     def set_phonon_eigensystem(self, method='colpa'):
         klength = len(self.kpath)
-        self.phonon_eigensystem = np.zeros([klength], dtype=eigensystem)
+        self.phonon_eigensystem = np.zeros(klength, dtype=eigensystem)
         for i,k in enumerate(self.kpath):
             eigen, eigvec = np.linalg.eig(self.phi_phonon(k))
             self.phonon_eigensystem[i] = eigensystem()
