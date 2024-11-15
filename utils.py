@@ -875,7 +875,7 @@ class dislon_lattice:
         klength = len(self.kpath)
         self.phonon_eigensystem = np.zeros([klength], dtype=eigensystem)
         for i,k in enumerate(self.kpath):
-            eigen, eigvec = np.sort(np.linalg.eig(self.phi_phonon(k)))
+            eigen, eigvec = np.linalg.eig(self.phi_phonon(k))
             self.phonon_eigensystem[i] = eigensystem()
             self.phonon_eigensystem[i].eigenenergies = np.sqrt(eigen)
             self.phonon_eigensystem[i].eigenvectors = eigvec
