@@ -894,7 +894,6 @@ class dislon_lattice:
             y0 = ylim[0]
             y1 = ylim[1]
         plt.ylim(y0, y1)
-        plt.xlim(self.kpath[0], self.kpath[-1])
         plt.show()
     
     def mag_ph_dis_system_band(self, N_k):
