@@ -649,7 +649,7 @@ class dislon_lattice:
         matrix =np.array([[self.lame*k1**2+2*self.shear*modk**2, self.lame*k1*k2, self.lame*k1*k3],
                  [self.lame*k2*k1, self.lame*k2**2+2*self.shear*modk**2, self.lame*k2*k3],
                  [self.lame*k3*k1, self.lame*k3*k2, self.lame*k3**2+2*self.shear*modk**2]],dtype=complex)/self.density 
-        phi = matrix*np.exp(1j*np.dot(k,self.A1))+matrix*np.exp(1j*np.dot(k,self.A2))+matrix*np.exp(1j*np.dot(k,-self.A1))+matrix*np.exp(1j*np.dot(k,-self.A2))
+        phi = matrix*np.exp(1j*np.dot(k,self.A1))+matrix*np.exp(1j*np.dot(k,self.A2))+matrix*np.exp(1j*np.dot(k,-self.A1))+matrix*np.exp(1j*np.dot(k,-self.A2))+2*matrix
         return phi
     def KAB(self,alpha):
         #Spring Matrices with a rotation
