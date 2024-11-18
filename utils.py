@@ -660,7 +660,7 @@ class dislon_lattice:
                     Pt = -k[i]*k[j]/(modk**2)
                 Pl = k[i]*k[j]/(modk**2)
                 phi[i,j] = self.shear*(modk**2)*Pt+(2*self.shear+self.lame)*(modk**2)*Pl
-        phi = 2*phi*(np.cos(k[0]*self.a0)+np.cos(k[1]*self.a0))
+        phi = phi
         return phi
     def KAB(self,alpha):
         #Spring Matrices with a rotation
