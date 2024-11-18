@@ -641,7 +641,7 @@ class dislon_lattice:
         #creating a k-path
         return [(self.lerp(p1[0],p2[0],1./n*i), self.lerp(p1[1],p2[1],1./n*i), 0) for i in range(n+1)]
     def phi_phonon(self, k):
-        k1=k[0]
+        """k1=k[0]
         k2=k[1]
         k3=k[2]
         phi = np.zeros([3,3], dtype=complex)
@@ -649,7 +649,18 @@ class dislon_lattice:
         matrix =np.array([[self.lame*k1**2+2*self.shear*modk**2, self.lame*k1*k2, self.lame*k1*k3],
                  [self.lame*k2*k1, self.lame*k2**2+2*self.shear*modk**2, self.lame*k2*k3],
                  [self.lame*k3*k1, self.lame*k3*k2, self.lame*k3**2+2*self.shear*modk**2]],dtype=complex)/self.density 
-        phi = matrix*(2*np.cos(k1*self.a0)+2*np.cos(k2*self.a0))+2*matrix
+        phi = matrix*(2*np.cos(k1*self.a0)+2*np.cos(k2*self.a0))+2*matrix"""
+        phi = np.zeros([3,3], dtype=complex)
+        modk=np.linalg.norm(k)
+        for i in range(3):
+            for j in range(3):
+                if i==j:
+                    Pt = 1-k[i]*k[j]/(modk**2)
+                else:
+                    Pt = -k[i]*k[j]/(modk**2)
+                Pl = k[i]*k[j]/(modk**2)
+                phi[i,j] = self.shear*(modk**2)*Pt+(2*self.shear+self.lame)*(modk**2)*Pl
+        phi = 2*phi*(np.cos(k[0]*self.a0)+np.cos(k[1]*self.a0))
         return phi
     def KAB(self,alpha):
         #Spring Matrices with a rotation
