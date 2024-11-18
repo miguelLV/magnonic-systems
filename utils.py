@@ -878,7 +878,7 @@ class dislon_lattice:
         for i,k in enumerate(self.kpath):
             eigen, eigvec = np.linalg.eig(self.phi_phonon(k))
             self.phonon_eigensystem[i] = eigensystem()
-            self.phonon_eigensystem[i].eigenenergies = np.sqrt(eigen+2)
+            self.phonon_eigensystem[i].eigenenergies = np.sqrt(eigen)
             self.phonon_eigensystem[i].eigenvectors = eigvec
     def plot_phonon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], linewidth=2.0):
         klength = len(self.kpath)
