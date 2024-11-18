@@ -886,7 +886,7 @@ class dislon_lattice:
         if type(N_dest)=='int':
             N_dest = [N_dest]
         for k in range(len(self.kpath)):
-          dispersion[k] = self.phonon_eigensystem[k].eigenenergies
+          dispersion[k] = np.sort(self.phonon_eigensystem[k].eigenenergies)
         for i in range(3):
             plt.plot(dispersion[:,i])
         plt.show()
