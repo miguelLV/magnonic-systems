@@ -646,9 +646,9 @@ class dislon_lattice:
         k3=k[2]
         phi = np.zeros([3,3], dtype=complex)
         modk=np.linalg.norm(k)
-        matrix =np.array([[self.lame*k1**2+2*self.shear*modk**2, self.lame*k1*k2, self.lame*k1*k3],
-                 [self.lame*k2*k1, self.lame*k2**2+2*self.shear*modk**2, self.lame*k2*k3],
-                 [self.lame*k3*k1, self.lame*k3*k2, self.lame*k3**2+2*self.shear*modk**2]],dtype=complex)/self.density 
+        matrix =np.array([[self.lame*k1**2-2*self.shear*modk**2, self.lame*k1*k2, self.lame*k1*k3],
+                 [self.lame*k2*k1, self.lame*k2**2-2*self.shear*modk**2, self.lame*k2*k3],
+                 [self.lame*k3*k1, self.lame*k3*k2, self.lame*k3**2-2*self.shear*modk**2]],dtype=complex)/self.density 
         phi = matrix*(2*np.cos(k1*self.a0)+2*np.cos(k2*self.a0))
         return phi
     def KAB(self,alpha):
