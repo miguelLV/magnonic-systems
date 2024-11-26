@@ -856,7 +856,7 @@ class dislon_lattice:
     def set_kpath(self,N_k):
         self.M=self.B1*0.5
         self.X=self.B1*0.5+self.B2*0.5
-        self.G=np.array([0.001,0,0])
+        self.G=np.array([0,0,0])
         path1=self.getEquidistantPoints(self.G,self.X, N_k)
         path2=self.getEquidistantPoints(self.X,self.M, N_k)
         path3=self.getEquidistantPoints(self.M,self.G, N_k)
@@ -885,7 +885,7 @@ class dislon_lattice:
         for i,k in enumerate(self.kpath):
             eigen, eigvec = np.linalg.eig(self.phi_phonon(k))
             self.phonon_eigensystem[i] = eigensystem()
-            self.phonon_eigensystem[i].eigenenergies = eigen
+            self.phonon_eigensystem[i].eigenenergies = np.sqrt(eigen)
             self.phonon_eigensystem[i].eigenvectors = eigvec
     def plot_phonon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], linewidth=2.0):
         klength = len(self.kpath)
