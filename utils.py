@@ -646,22 +646,26 @@ class dislon_lattice:
         k3=k[2]
         V = np.zeros([3,3], dtype=complex)
         modk=np.linalg.norm(k)
+        phase1=-1j*np.dot(k,self.a0*self.A1)
+        phase2=-1j*np.dot(k,self.a0*self.A2)
+        phase3=-1j*np.dot(k,-self.a0*self.A1)
+        phase4=-1j*np.dot(k,-self.a0*self.A2)
+        phi_onsite = self.KAB([1,0,0])+self.KAB([0,1,0])+self.KAB([-1,0,0])+self.KAB([0,-1,0]) 
+        phi_neigh_dis = self.KAB([1,0,0])*np.exp(phase1)+self.KAB([0,1,0])*np.exp(phase2)+self.KAB([-1,0,0])*np.exp(phase3)+self.KAB([0,-1,0])*np.exp(phase4)
+        return phi_onsite+phi_neigh_dis
+    def KAB(self,Pos_neigh):
+        #Spring Matrices with a rotation
         mass = self.density*(self.a0**3)
         vl = np.sqrt((2*self.shear+self.lame)/self.density)
         vt =np.sqrt(self.shear/self.density)
         V = (mass/(self.a0**2))*np.array([[vl**2, 0, 0],
                                           [0, vt**2, 0],
                                           [0, 0, vt**2]],dtype=complex)
-        phi = 4*V*(np.cos(k1*self.a0)+np.cos(k2*self.a0))
-        return phi
-    def KAB(self,alpha):
-        #Spring Matrices with a rotation
-        a=self.phir*np.cos(alpha)**2+self.phiti*np.sin(alpha)**2                                   
-        b=(self.phir-self.phiti)*np.cos(alpha)*np.sin(alpha)
-        c=(self.phir-self.phiti)*np.cos(alpha)*np.sin(alpha)
-        d=self.phir*np.sin(alpha)**2+self.phiti*np.cos(alpha)**2
-        matrix=np.array([[a,b,0],[c,d,0],[0,0,self.phito]])
-        return matrix
+        arg = np.angle(Pos_neigh[0]+1j*Pos_neigh[1])
+        R = np.array([[np.cos(arg), np.sin(arg), 0],
+                      [-np.sin(arg), np.cos(arg), 0],
+                      [0, 0, 1]])
+        return np.matmul(np.matmul(np.linalg.inv(R),V),R)
     def Onsite_Phonon(self,k):
         term=self.KAB(self.theta1)+self.KAB(self.theta2)+self.KAB(self.theta3)+self.KAB(self.theta4)  
         return term
