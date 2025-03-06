@@ -331,7 +331,6 @@ class lattice:
         plt.rcParams.update({'text.usetex' : True,
           'font.size' : label_size,
           'font.family' : 'lmodern',
-          'text.latex.unicode': True,
           })
         plt.show()
 
