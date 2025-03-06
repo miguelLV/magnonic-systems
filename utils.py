@@ -327,7 +327,7 @@ class lattice:
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
         ax.set_xlabel(r'$k/a\sqrt{3}$')
         ax.set_ylabel(r'$E/|J|S$')
-        ax.xaxis.get_label().set_fontsize(label_size)
+        #ax.xaxis.get_label().set_fontsize(label_size)
         plt.show()
 
     '''
