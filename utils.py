@@ -325,8 +325,9 @@ class lattice:
         ax = plt.gca()
         ax.set_xticks([0, np.pi, 2*np.pi])
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
-        ax.set_xlabel(r'$k/a\sqrt{3}$', fontsize = label_size)
-        ax.set_ylabel(r'$E/|J|S$', fontsize = label_size)
+        ax.set_xlabel(r'$k/a\sqrt{3}$')
+        ax.set_ylabel(r'$E/|J|S$')
+        ax.labelsize(label_size)
         plt.show()
 
     '''
