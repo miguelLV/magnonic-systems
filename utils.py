@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.lines as lines
 import matplotlib.pyplot as plt
+import matplotlib
 import scipy as sc
 from scipy.constants import hbar
 
