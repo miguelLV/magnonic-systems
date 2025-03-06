@@ -298,7 +298,7 @@ class lattice:
         - ylim: sets the yaxis limits of the plot.
     '''
     
-    def plot_ribbon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], linewidth=2.0):
+    def plot_ribbon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], dest_linewidth=2.0, norm_linewidth=1.0,label_size=2.0):
         klength = len(self.kpath_ribbon)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
         if type(N_dest)=='int':
@@ -309,11 +309,11 @@ class lattice:
           if N_dest != None and (n in N_dest): 
             col='r'
             order = 2.5
-            width = linewidth
+            width = dest_linewidth
           else: 
             col='k'
             order = 2
-            width = 1.0
+            width = norm_linewidth
           plt.plot(self.kpath_ribbon*np.sqrt(3)*self.lattice_constant, dispersion[:,n], color=col, zorder = order, linewidth=width)
         y0 = np.min(dispersion[yindex])
         y1 = np.max(dispersion[yindex])
@@ -325,8 +325,8 @@ class lattice:
         ax = plt.gca()
         ax.set_xticks([0, np.pi, 2*np.pi])
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
-        ax.set_xlabel(r'$k/a\sqrt{3}$')
-        ax.set_ylabel(r'$E/|J|S$')
+        ax.set_xlabel(r'$k/a\sqrt{3}$', fontsize = label_size)
+        ax.set_ylabel(r'$E/|J|S$', fontsize = label_size)
         plt.show()
 
     '''
