@@ -299,7 +299,7 @@ class lattice:
         - ylim: sets the yaxis limits of the plot.
     '''
     
-    def plot_ribbon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], dest_linewidth=2.0, norm_linewidth=1.0,label_size=2.0):
+    def plot_ribbon_dispersion(self, N_dest=None, yindex=0, ylim=[0,0], xlim=[0,0], dest_linewidth=2.0, norm_linewidth=1.0,label_size=2.0):
         klength = len(self.kpath_ribbon)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
         if type(N_dest)=='int':
@@ -321,8 +321,11 @@ class lattice:
         if ylim!=[0,0]:
             y0 = ylim[0]
             y1 = ylim[1]
+        if xlim!=[0,0]:
+            x0 = xlim[0]
+            x1 = xlim[1]
         plt.ylim(y0, y1)
-        plt.xlim(self.kpath_ribbon[0], self.kpath_ribbon[-1])
+        plt.xlim(x0, x1)
         ax = plt.gca()
         ax.set_xticks([0, np.pi, 2*np.pi])
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
