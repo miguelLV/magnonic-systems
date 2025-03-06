@@ -328,7 +328,7 @@ class lattice:
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
         ax.set_xlabel(r'$k/a\sqrt{3}$')
         ax.set_ylabel(r'$E/|J|S$')
-        matplotlib.rcParams.update({'font.size': 22})
+        matplotlib.rcParams.update({'font.size': label_size})
         plt.show()
 
     '''
