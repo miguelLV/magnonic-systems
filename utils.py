@@ -327,8 +327,8 @@ class lattice:
         plt.ylim(y0, y1)
         plt.xlim(x0, x1)
         ax = plt.gca()
-        ax.set_xticks([0, np.pi, 2*np.pi])
-        ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
+        #ax.set_xticks([0, np.pi, 2*np.pi])
+        #ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
         ax.set_xlabel(r'$k/a\sqrt{3}$')
         ax.set_ylabel(r'$E/|J|S$')
         plt.rcParams.update({
