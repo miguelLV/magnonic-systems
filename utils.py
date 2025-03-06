@@ -328,9 +328,8 @@ class lattice:
         ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
         ax.set_xlabel(r'$k/a\sqrt{3}$')
         ax.set_ylabel(r'$E/|J|S$')
-        plt.rcParams.update({'text.usetex' : True,
+        plt.rcParams.update({
           'font.size' : label_size,
-          'font.family' : 'lmodern',
           })
         plt.show()
 
