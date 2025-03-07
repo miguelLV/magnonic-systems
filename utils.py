@@ -411,7 +411,7 @@ class lattice:
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
         self.DOS = np.zeros(len(omega))
         for i, E in enumerate(omega):
-            self.DOS[i] = sc.integrate.simpson(spectral[:,i], x = k_path)
+            self.DOS[i] = sc.integrate.simpson(spectral[i,:], x = k_path)
     
     def plot_DOS(self, omegalim, label_size=2.0):
         spectral = self.spectral
