@@ -370,7 +370,7 @@ class lattice:
             for j, omega in enumerate(omega_list):
                 self.spectral[i,j] = np.trace(self.spectral_function(Hamiltonian, omega, delta))
                 
-    def plot_spectral(self, omegalim):
+    def plot_spectral(self, omegalim, label_size=2.0):
         spectral_size = np.shape(self.spectral)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         xticks = np.linspace(omegalim[0], omegalim[1], 5)
@@ -383,6 +383,10 @@ class lattice:
         ax.set_xticks([0, spectral_size[0]/2, spectral_size[0]-1], labels=[r'$0$', r'$\pi$', r'$2\pi$' ]);
         ax.set_yticks([0, spectral_size[1]/4, 2*spectral_size[1]/4, 3*spectral_size[1]/4,
                        spectral_size[1]-1], labels = xticks);
+        plt.rcParams.update({
+          'font.size' : label_size,
+          })
+        plt.show()
     
     def kDerivative(self, n):
         k_path = self.kpath_ribbon
@@ -409,12 +413,16 @@ class lattice:
         for i, E in enumerate(omega):
             self.DOS[i] = sc.integrate.simpson(spectral[:,i], x = k_path)
     
-    def plot_DOS(self, omegalim):
+    def plot_DOS(self, omegalim, label_size=2.0):
         spectral = self.spectral
         DOS = self.DOS
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
         plt.plot(DOS, omega)
         plt.ylabel(r'$\omega / |J|S$')
+        plt.rcParams.update({
+          'font.size' : label_size,
+          })
+        plt.show()
         
 
     
