@@ -354,7 +354,7 @@ class lattice:
         Ny = self.Ny
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         Hsize = len(Hamiltonian[:,0])
-        argument_matrix = omega*np.eye(Hsize)*abs(J)*S + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian)
+        argument_matrix = (omega*np.eye(Hsize) + 1j*delta*np.eye(Hsize) - np.dot(self.PU(Ny),Hamiltonian))
         green_matrix = np.linalg.inv(argument_matrix)
         imaginary_matrix = np.imag(green_matrix)
         result = -(imaginary_matrix)/np.pi
@@ -411,7 +411,7 @@ class lattice:
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
         self.DOS = np.zeros(len(omega))
         for i, E in enumerate(omega):
-            self.DOS[i] = sc.integrate.simpson(spectral[:,i], x = k_path)
+            self.DOS[i] = np.sum(spectral[:,i])
     
     def plot_DOS(self, omegalim, label_size=2.0):
         spectral = self.spectral
