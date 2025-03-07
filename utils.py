@@ -324,8 +324,8 @@ class lattice:
         if xlim!=[0,0]:
             x0 = xlim[0]
             x1 = xlim[1]
+            plt.xlim(x0, x1)
         plt.ylim(y0, y1)
-        plt.xlim(x0, x1)
         ax = plt.gca()
         #ax.set_xticks([0, np.pi, 2*np.pi])
         #ax.set_xticklabels(['$0$', '$\pi$', '$2\pi$'])
