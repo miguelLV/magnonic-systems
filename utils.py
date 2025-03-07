@@ -405,7 +405,7 @@ class lattice:
         plt.ylabel(r'$c_g$')
         
     def set_DOS(self, omegalim):
-        k_path = self.kpath_ribbon
+        k_path = self.kpath_ribbon*(np.sqrt(3))
         klength = len(k_path)
         spectral = self.spectral
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
