@@ -405,13 +405,13 @@ class lattice:
         plt.ylabel(r'$c_g$')
         
     def set_DOS(self, omegalim):
-        k_path = self.kpath_ribbon
+        k_path = self.kpath_ribbon*(np.sqrt(3))
         klength = len(k_path)
         spectral = self.spectral
         omega = np.linspace(omegalim[0], omegalim[1], len(spectral[0]))
         self.DOS = np.zeros(len(omega))
         for i, E in enumerate(omega):
-            self.DOS[i] = np.sum(spectral[:,i])
+            self.DOS[i] = sc.integrate.simpson(spectral[:,i], x=k_path)
     
     def plot_DOS(self, omegalim, label_size=2.0):
         spectral = self.spectral
