@@ -420,7 +420,7 @@ class lattice:
         k_path = self.kpath_ribbon
         klength = len(k_path)
         self.group_velocity = np.zeros([4*self.Ny, klength])
-        for n in range(len(self.kpath_ribbon)):
+        for n in range(4*self.Ny):
             self.group_velocity[n] = self.kDerivative(n)
     
     def plot_kderivative(self, bands):
