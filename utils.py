@@ -417,6 +417,8 @@ class lattice:
         derivative = np.gradient(dispersion[:,n])
         return derivative
     def set_group_velocity(self):
+        k_path = self.kpath_ribbon
+        klength = len(k_path)
         self.group_velocity = np.zeros([4*self.Ny, klength])
         for n in range(len(self.kpath_ribbon)):
             self.group_velocity[n] = self.kDerivative(n)
@@ -425,7 +427,7 @@ class lattice:
         k_path = self.kpath_ribbon
         fig, ax = plt.subplots()
         for n in bands:
-            ax.plot(k_path, self.group_velocity[n]))
+            ax.plot(k_path, self.group_velocity[n])
         plt.xlabel(r'$k_x \delta_x$')
         plt.ylabel(r'$c_g$')
         
