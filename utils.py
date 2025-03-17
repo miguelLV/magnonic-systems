@@ -23,6 +23,15 @@ class site:
         self.neighbors = []
         self.position = np.zeros(2)
         self.probability_r = 0
+class spatial_row:
+    def __init__(self, length):
+        self.site_array = np.zeros(length, dtype=site)
+        for i in range(length):
+            if i%2==0:
+                stype = 'B'
+            else:
+                stype = 'A'
+            self.site_array[i] = site(stype)
 
 '''
 class eigensystem define an object that contains 2 attributes that have the 
@@ -38,6 +47,7 @@ class eigensystem:
     def __init__(self):
       self.eigenenergies = None
       self.eigenvectors = None
+      
 
 '''
 class lattice define initiate an object that have the following attributes:
@@ -81,11 +91,13 @@ class lattice:
         self.kpath_ribbon = None
         self.unit_cell_sites = np.zeros([2*int(self.Ny)], dtype=site)
         self.lattice_sites = np.zeros([int(self.Nx), 2*int(self.Ny)], dtype=site)
+        self.triangular_sites = None
         self.ribbon_Hamiltonian = None
         self.ribbon_eigensystem = None
         self.k_probabilities = None
         self.spectral = None
         self.DOS = None
+        self.group_velocity = None
 
 
 
@@ -129,6 +141,14 @@ class lattice:
           for i in range(2*self.Ny):
               self.lattice_sites[0,i].position[1] += -self.lattice_sites[0,0].position[1]
       self.unit_cell_sites=self.lattice_sites[0,:]
+      
+    '''def triangular_lattice(self, L):
+        self.triangular_sites = np.zeros(L, dtype=spatial_row)
+        for i in range(L):
+            self.triangular_sites[i] = spatial_row(2*i+1)
+            for j in range(L):
+                self.triangular_sites[i].site_array[j].position = 
+    '''           
     
     '''
     The print_unitcell method prints in the real space the atoms in the 
@@ -396,11 +416,16 @@ class lattice:
           dispersion[k] = self.ribbon_eigensystem[k].eigenenergies
         derivative = np.gradient(dispersion[:,n])
         return derivative
+    def set_group_velocity(self):
+        self.group_velocity = np.zeros([4*self.Ny, klength])
+        for n in range(len(self.kpath_ribbon)):
+            self.group_velocity[n] = self.kDerivative(n)
     
-    def plot_kderivative(self, n):
+    def plot_kderivative(self, bands):
         k_path = self.kpath_ribbon
         fig, ax = plt.subplots()
-        ax.plot(k_path, self.kDerivative(n))
+        for n in bands:
+            ax.plot(k_path, self.group_velocity[n]))
         plt.xlabel(r'$k_x \delta_x$')
         plt.ylabel(r'$c_g$')
         
