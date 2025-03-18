@@ -422,7 +422,7 @@ class lattice:
         plt.show()
     
     def kDerivative(self, n):
-        k_path = self.kpath_ribbon
+        k_path = self.kpath_ribbon*(np.sqrt(3))
         klength = len(k_path)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
         for k_index in range(len(self.kpath_ribbon)):
