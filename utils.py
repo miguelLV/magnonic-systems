@@ -287,8 +287,8 @@ class lattice:
           print(np.shape(self.ribbon_Hamiltonian[i]))
           if i>len(self.kpath_ribbon)/2-1:
                 corrected = eigen[2*self.Ny]
-                eigen = np.delete(eigen,2*self.Ny)
-                eigen = np.insert(eigen,2*self.Ny-1,corrected) 
+                eigen = np.delete(eigen,self.Ny)
+                eigen = np.insert(eigen,self.Ny-1,corrected) 
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
         else:
