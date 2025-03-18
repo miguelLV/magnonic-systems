@@ -278,7 +278,7 @@ class lattice:
         component.
     '''
 
-    def set_ribbon_eigensystem(self, method='colpa'):
+    def set_ribbon_eigensystem(self, method='colpa', tol=0.01):
       self.ribbon_eigensystem = np.zeros([len(self.kpath_ribbon)], dtype=eigensystem)
       swap=False
       for i, k in enumerate(self.kpath_ribbon):
@@ -289,7 +289,7 @@ class lattice:
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
-          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=0.01):
+          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=tol):
               swap = True
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
