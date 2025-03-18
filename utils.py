@@ -291,7 +291,7 @@ class lattice:
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
-                print(eigvec[eself.Ny-1], eigvec[self.Ny])
+                print(eigvec[self.Ny-1], eigvec[self.Ny])
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
         else:
