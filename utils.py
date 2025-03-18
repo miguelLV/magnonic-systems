@@ -285,7 +285,7 @@ class lattice:
         if method=='colpa':
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
-          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=0.01):
+          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=0.001):
               swap = True
           if swap:
                 corrected = eigen[self.Ny]
