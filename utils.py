@@ -287,8 +287,8 @@ class lattice:
           print(len(eigen))
           if i>len(self.kpath_ribbon)/2-1:
                 corrected = eigen[2*self.Ny]
-                eigen = np.delete(eigen,self.Ny)
-                eigen = np.insert(eigen,self.Ny-1,corrected) 
+                eigen = np.delete(eigen,self.Ny+1)
+                eigen = np.insert(eigen,self.Ny,corrected) 
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
         else:
