@@ -418,10 +418,15 @@ class lattice:
         k_path = self.kpath_ribbon
         klength = len(k_path)
         dispersion = np.zeros([klength, 4*self.Ny], dtype=complex)
-        for k in range(len(self.kpath_ribbon)):
-          dispersion[k] = self.ribbon_eigensystem[k].eigenenergies
-        derivative = np.gradient(dispersion[:,n])
+        for k_index in range(len(self.kpath_ribbon)):
+          dispersion[k_index] = self.ribbon_eigensystem[k_index].eigenenergies
+          if n==(2*self.Ny-1) and k_index>klength/2:
+              corrected = dispersion[k_index,n]
+              dispersion[k_index,n] = dispersion[k_index,n+1]
+              dispersion[k_index,n+1] = corrected
+        derivative = np.gradient(dispersion[:,n],k_path)
         return derivative
+    
     def set_group_velocity(self):
         k_path = self.kpath_ribbon
         klength = len(k_path)
