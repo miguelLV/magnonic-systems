@@ -287,10 +287,9 @@ class lattice:
               last_eigvec = eigvec[self.Ny-1]
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
-          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=0.01):
+          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=0.001):
               swap = True
           if swap:
-                print(np.allclose(np.real(last_eigvec),np.real(eigvec[self.Ny-1]),atol=0.5))
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
