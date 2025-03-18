@@ -142,13 +142,19 @@ class lattice:
               self.lattice_sites[0,i].position[1] += -self.lattice_sites[0,0].position[1]
       self.unit_cell_sites=self.lattice_sites[0,:]
       
-    '''def triangular_lattice(self, L):
+    def triangular_lattice(self, L):
         self.triangular_sites = np.zeros(L, dtype=spatial_row)
         for i in range(L):
             self.triangular_sites[i] = spatial_row(2*i+1)
-            for j in range(L):
-                self.triangular_sites[i].site_array[j].position = 
-    '''           
+            if i==0:
+                self.triangular_lattice[i].site_array[0].position = np.array([0,0])
+            else:
+                for j in range(len(self.triangular_sites[i].site_array)):
+                    if j == 0:
+                        self.triangular_sites[i].site_array[j].position = self.triangular_sites[i-1].site_array[0].position + self.bond_vectors[2]-self.bond_vectors[0]
+                    else:
+                        self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0]-(j%2+1)*self.bond_vectors[1]
+              
     
     '''
     The print_unitcell method prints in the real space the atoms in the 
