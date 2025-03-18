@@ -290,7 +290,7 @@ class lattice:
           if np.isclose(eigen[self.Ny],eigen[self.Ny], atol=0.01):
               swap = True
           if swap:
-                print(np.allclose(np.real(last_eigvec),np.real(eigvec[self.Ny-1]),atol=0.5))
+                print(np.allclose(np.real(last_eigvec),np.real(eigvec[self.Ny]),atol=0.5))
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
