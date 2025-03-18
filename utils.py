@@ -283,7 +283,7 @@ class lattice:
       swap=False
       for i, k in enumerate(self.kpath_ribbon):
         if method=='colpa':
-          if swap:
+          if i>0:
               last_eigvec = eigvec
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
