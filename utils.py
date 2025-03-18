@@ -280,11 +280,14 @@ class lattice:
 
     def set_ribbon_eigensystem(self, method='colpa'):
       self.ribbon_eigensystem = np.zeros([len(self.kpath_ribbon)], dtype=eigensystem)
+      swap=False
       for i, k in enumerate(self.kpath_ribbon):
         if method=='colpa':
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
-          if i>len(self.kpath_ribbon)/2:
+          if np.isclose(eigen[self.Ny],eigen[self.Ny-1]):
+              swap = True
+          if swap:
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected) 
