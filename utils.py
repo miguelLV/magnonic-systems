@@ -285,7 +285,9 @@ class lattice:
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
           if i>=len(self.kpath_ribbon)/2-1:
-              eigen[2*self.Ny-1], eigen[2*self.Ny], eigen[2*self.Ny-1].copy
+                corrected = eigen[2*self.Ny-1].copy
+                eigen[2*self.Ny-1] = eigen[2*self.Ny]
+                eigen[2*self.Ny] = corrected 
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
         else:
