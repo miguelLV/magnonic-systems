@@ -298,7 +298,7 @@ class lattice:
                 corrected = eigen[self.Ny+1]
                 eigen = np.delete(eigen,self.Ny+1)
                 eigen = np.insert(eigen,self.Ny,corrected)
-          if np.isclose(eigen[self.Ny],eigen[self.Ny], atol=tol):
+          if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=tol):
               swap = True
           if np.isclose(eigen[self.Ny+1],eigen[self.Ny], atol=tol):
               if swap2:
