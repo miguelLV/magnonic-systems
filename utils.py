@@ -293,7 +293,7 @@ class lattice:
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
           if swap2:
-                if i<len(self.kpath_ribbon)/2.7:
+                if i<len(self.kpath_ribbon)/2.65:
                     pass;
                 else:
                     corrected = eigen[self.Ny+1]
