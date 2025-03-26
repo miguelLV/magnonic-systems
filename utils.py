@@ -287,17 +287,24 @@ class lattice:
           eigen, eigvec = self.colpa_k(self.ribbon_Hamiltonian[i])
           self.ribbon_eigensystem[i] = eigensystem()
           if swap:
+                if i<len(self.kpath_ribbon)/4:
+                    pass;
                 corrected = eigen[self.Ny]
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
           if swap2:
+                if i<len(self.kpath_ribbon)/4:
+                    pass;
                 corrected = eigen[self.Ny+1]
                 eigen = np.delete(eigen,self.Ny+1)
                 eigen = np.insert(eigen,self.Ny,corrected)
           if np.isclose(eigen[self.Ny],eigen[self.Ny], atol=tol):
               swap = True
           if np.isclose(eigen[self.Ny+1],eigen[self.Ny], atol=tol):
-              swap2 = True
+              if swap2:
+                  swap2 = False
+              else:
+                  swap2 = True
           self.ribbon_eigensystem[i].eigenenergies = eigen
           self.ribbon_eigensystem[i].eigenvectors = eigvec
         else:
