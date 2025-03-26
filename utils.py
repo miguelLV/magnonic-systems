@@ -293,12 +293,12 @@ class lattice:
                 eigen = np.delete(eigen,self.Ny)
                 eigen = np.insert(eigen,self.Ny-1,corrected)
           if swap2:
-                print(self.Ny,self.Ny+1)
-                if k<2/np.sqrt(3):
+                if i<len(self.kpath_ribbon)/3:
                     pass;
-                corrected = eigen[self.Ny+1]
-                eigen = np.delete(eigen,self.Ny+1)
-                eigen = np.insert(eigen,self.Ny,corrected)
+                else:
+                    corrected = eigen[self.Ny+1]
+                    eigen = np.delete(eigen,self.Ny+1)
+                    eigen = np.insert(eigen,self.Ny,corrected)
           if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=tol):
               swap = True
           if np.isclose(eigen[self.Ny+1],eigen[self.Ny], atol=tol):
