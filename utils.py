@@ -435,7 +435,7 @@ class lattice:
                 for bond in self.bond_vectors:
                     if (r_i-r_j == bond).all() or (r_i-r_j ==-bond).all():
                         isneighbor=True
-                print(r_i,r_j,isneighbor)
+                print(r_i-r_j,isneighbor)
                 if isneighbor:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                     actual_bond_size = np.linalg.norm(actual_bond)
