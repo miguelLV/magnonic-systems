@@ -155,7 +155,7 @@ class lattice:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i-1].site_array[0].position + self.bond_vectors[2]-self.bond_vectors[0]
                     else:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0]-(j%2+1)*self.bond_vectors[1]
-        ymax = abs(self.triangular_sites[L-1].site_array[0].position[2])
+        ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
         for i in range(L):
             for j in range(len(self.triangular_sites[i].site_array)):
                 self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j].position+np.array([0,+ymax])
@@ -409,7 +409,7 @@ class lattice:
       
     def set_triangular_hamiltonian(self):
         L=len(self.triangular_sites)
-        ymax = abs(self.triangular_sites[L-1].site_array[0].position[2])
+        ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
         cmax = 1/(self.lattice-2*ymax)
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
