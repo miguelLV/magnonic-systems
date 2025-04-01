@@ -421,7 +421,7 @@ class lattice:
                 index=i+j
                 if i>0:
                     index=index+len(self.triangular_sites[i-1].site_array)
-                print(index)
+                print(i,',',j,' ',index)
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
         Hamiltonian = np.zeros(2*L*L, dtype=complex)
