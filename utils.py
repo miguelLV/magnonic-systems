@@ -429,7 +429,7 @@ class lattice:
                 r_j = sites[j].position
                 isneighbor =False
                 for bond in self.bond_vectors:
-                    if r_i-r_j == bond or r_i-r_j ==-bond:
+                    if (r_i-r_j == bond).all() or (r_i-r_j ==-bond).all():
                         isneighbor=True
                 if isneighbor:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
