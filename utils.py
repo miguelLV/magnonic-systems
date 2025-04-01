@@ -398,6 +398,38 @@ class lattice:
         self.ribbon_Hamiltonian[i] = k_hamiltonian(k, defParams)
       print('Hamiltoniano definido en todo el camino k')
       
+    def displacement(self, position, def_param):
+        x, y=position
+        return def_param*np.array([2*x*y,x**2-y**2])
+      
+    def set_triangular_hamiltonian(self):
+        c = self.triaxial_def_param
+        L = len(self.triangular_sites)
+        J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
+        magnetoelastic_coupling=1000
+        sites = np.zeros(L*L, dtype=site)
+        for i in range(L):
+            for j in range(L):
+                index=i+j
+                if i>0:
+                    index=index+len(self.triagular_sites[i-1])
+                sites[index] = self.triagular_sites[i].site_array[j]
+        Hamiltonian = np.zeros(2*L*L, dtype=complex)
+        for i in range(2*L*L):
+            for j in range(i,2*L*L):
+                r_i = sites[i].position
+                r_j = sites[j].position
+                isneighbor =False
+                for bond in self.bond_vectors:
+                    if r_i-r_j == bond or r_i-r_j ==-bond:
+                        isneighbor=True
+                if isneighbor:
+                    actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
+                    actual_bond_size = np.linalg.norm(actual_bond)
+                    J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
+                    Hamiltonian[i,j] = J_ij
+                    Hamiltonian[j,i] = np.conj(J_ij)
+      
     def spectral_function(self, Hamiltonian, omega, delta):
         Ny = self.Ny
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
