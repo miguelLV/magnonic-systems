@@ -426,6 +426,8 @@ class lattice:
         for i in range(2*L*L):
             for j in range(i,2*L*L):
                 r_i = sites[i].position
+                print(i,',',j)
+                print(sites[j])
                 r_j = sites[j].position
                 isneighbor =False
                 for bond in self.bond_vectors:
