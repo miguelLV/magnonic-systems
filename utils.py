@@ -410,7 +410,7 @@ class lattice:
     def set_triangular_hamiltonian(self):
         L=len(self.triangular_sites)
         ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
-        cmax = 1/(self.lattice-2*ymax)
+        cmax = 1/(self.lattice_constant-2*ymax)
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
