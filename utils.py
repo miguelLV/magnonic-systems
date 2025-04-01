@@ -417,9 +417,8 @@ class lattice:
         magnetoelastic_coupling=1000
         sites = np.zeros(L*L, dtype=site)
         for i in range(L):
-            #print(i)
-            print(len(self.triangular_sites[i].site_array))
             for j in range(len(self.triangular_sites[i].site_array)):
+                print(i,',',j)
                 index=i+j
                 if i>0:
                     index=index+len(self.triangular_sites[i-1].site_array)
