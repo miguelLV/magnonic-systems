@@ -418,10 +418,10 @@ class lattice:
         sites = np.zeros(L*L, dtype=site)
         for i in range(L):
             for j in range(len(self.triangular_sites[i].site_array)):
-                print(i,',',j)
                 index=i+j
                 if i>0:
                     index=index+len(self.triangular_sites[i-1].site_array)
+                print(index)
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
         Hamiltonian = np.zeros(2*L*L, dtype=complex)
