@@ -98,6 +98,7 @@ class lattice:
         self.spectral = None
         self.DOS = None
         self.group_velocity = None
+        self.triaxial_def_param = None
 
 
 
@@ -154,6 +155,10 @@ class lattice:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i-1].site_array[0].position + self.bond_vectors[2]-self.bond_vectors[0]
                     else:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0]-(j%2+1)*self.bond_vectors[1]
+        ymax = abs(self.triangular_sites[L-1].site_array[0].position[2])
+        for i in range(L):
+            for j in range(len(self.triangular_sites[i].site_array)):
+                self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j].position+np.array([0,+ymax])
               
     
     '''
@@ -403,7 +408,10 @@ class lattice:
         return def_param*np.array([2*x*y,x**2-y**2])
       
     def set_triangular_hamiltonian(self):
-        c = self.triaxial_def_param
+        L=len(self.triangular_sites)
+        ymax = abs(self.triangular_sites[L-1].site_array[0].position[2])
+        cmax = 1/(self.lattice-2*ymax)
+        c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         magnetoelastic_coupling=1000
