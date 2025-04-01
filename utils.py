@@ -418,11 +418,12 @@ class lattice:
         sites = np.zeros(L*L, dtype=site)
         counter=0
         for i in range(L):
+            if i>0:
+                counter=counter+len(self.triangular_sites[i-1].site_array)-1
             for j in range(len(self.triangular_sites[i].site_array)):
                 index=i+j
                 if i>0:
                     index=index+counter
-                    counter=counter+len(self.triangular_sites[i-1].site_array)-1
                 print(i,',',j,',',counter,' ',index)
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
