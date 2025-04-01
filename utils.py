@@ -681,7 +681,7 @@ class lattice:
     def bogoliubov_k(self, hamiltonian):
       Ny = np.shape(hamiltonian)[0]
       output = np.zeros(Ny)
-      ParaU = self.PU(int(Ny/2))
+      ParaU = self.PU(int(Ny/4))
       H = hamiltonian
       PUH = np.dot(ParaU, H)
       output = (np.sort(np.linalg.eig(PUH)[0]))
