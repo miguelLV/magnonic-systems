@@ -679,9 +679,9 @@ class lattice:
     with the eigenvalues of the magnon hamiltonian array.
     '''
     def bogoliubov_k(self, hamiltonian):
-      Ny = self.Ny
-      output = np.zeros(4*Ny)
-      ParaU = self.PU(Ny)
+      Ny = np.shape(hamiltonian)[0]
+      output = np.zeros(Ny)
+      ParaU = self.PU(Ny/2)
       H = hamiltonian
       PUH = np.dot(ParaU, H)
       output = (np.sort(np.linalg.eig(PUH)[0]))
