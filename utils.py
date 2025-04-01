@@ -148,7 +148,7 @@ class lattice:
         for i in range(L):
             self.triangular_sites[i] = spatial_row(2*i+1)
             if i==0:
-                self.triangular_lattice[i].site_array[0].position = np.array([0,0])
+                self.triangular_sites[i].site_array[0].position = np.array([0,0])
             else:
                 for j in range(len(self.triangular_sites[i].site_array)):
                     if j == 0:
