@@ -426,7 +426,7 @@ class lattice:
                     index=index+counter
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
-        Hamiltonian = np.zeros(2*L*L, dtype=complex)
+        Hamiltonian = np.zeros([2*L*L,2*L*L], dtype=complex)
         for i in range(2*L*L):
             for j in range(i,2*L*L):
                 r_i = sites[i%(L*L)].position
