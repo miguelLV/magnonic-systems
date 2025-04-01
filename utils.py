@@ -419,7 +419,7 @@ class lattice:
         for i in range(L):
             for j in range(len(self.triangular_sites[i].site_array)):
                 index=i+j
-                if i>0:
+                if i>1:
                     index=index+len(self.triangular_sites[i-1].site_array)
                 print(i,',',j,' ',index)
                 sites[index] = self.triangular_sites[i].site_array[j]
