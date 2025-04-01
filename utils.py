@@ -416,11 +416,13 @@ class lattice:
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
         magnetoelastic_coupling=1000
         sites = np.zeros(L*L, dtype=site)
+        counter=0
         for i in range(L):
             for j in range(len(self.triangular_sites[i].site_array)):
                 index=i+j
                 if i>1:
-                    index=index+len(self.triangular_sites[i-1].site_array)
+                    index=index+counter
+                    counter=counter+len(self.triangular_sites[i-1].site_array-1)
                 print(i,',',j,' ',index)
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
