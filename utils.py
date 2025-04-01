@@ -424,16 +424,13 @@ class lattice:
                 index=i+j
                 if i>0:
                     index=index+counter
-                print(i,',',j,',',counter,' ',index)
                 sites[index] = self.triangular_sites[i].site_array[j]
                 #print(i,',',index,',',sites[index])
         Hamiltonian = np.zeros(2*L*L, dtype=complex)
         for i in range(2*L*L):
             for j in range(i,2*L*L):
-                r_i = sites[i].position
-                print(i,',',j)
-                print(sites[j])
-                r_j = sites[j].position
+                r_i = sites[i%(L*L)].position
+                r_j = sites[j%(L*L)].position
                 isneighbor =False
                 for bond in self.bond_vectors:
                     if (r_i-r_j == bond).all() or (r_i-r_j ==-bond).all():
