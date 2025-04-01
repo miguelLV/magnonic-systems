@@ -418,7 +418,8 @@ class lattice:
         sites = np.zeros(L*L, dtype=site)
         for i in range(L):
             print(i)
-            for j in range(len(self.triangular_sites[i].site_array)-1):
+            print(len(self.triangular_sites[i].site_array))
+            for j in range(len(self.triangular_sites[i].site_array)):
                 index=i+j
                 if i>0:
                     index=index+len(self.triangular_sites[i-1].site_array)
