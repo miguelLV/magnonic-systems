@@ -437,6 +437,7 @@ class lattice:
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = J_ij
                     Hamiltonian[j,i] = np.conj(J_ij)
+        return Hamiltonian
       
     def spectral_function(self, Hamiltonian, omega, delta):
         Ny = self.Ny
