@@ -439,7 +439,7 @@ class lattice:
                 isneighbor =False
                 if i==j:
                     Hamiltonian[i,j] = J
-                if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neigbors)).any():
+                if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
                 if isneighbor:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
