@@ -438,7 +438,7 @@ class lattice:
                 r_j = sites[j%(L*L)].position
                 isneighbor =False
                 if i==j:
-                    Hamiltonian[i,j] = J
+                    Hamiltonian[i,j] = 3*J
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
                 if isneighbor:
