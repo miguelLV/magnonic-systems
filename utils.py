@@ -155,6 +155,11 @@ class lattice:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i-1].site_array[0].position + self.bond_vectors[2]-self.bond_vectors[0]
                     else:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0]-(j%2+1)*self.bond_vectors[1]
+                        self.triangular_sites[i].site_array[j-1].neighbors.append(self.triangular_sites[i].site_array[j])
+                        self.triangular_sites[i].site_array[j].neighbors.append(self.triangular_sites[i].site_array[j-1])
+                        if j%2 !=0:
+                            self.triangular_sites[i].site_array[j].neighbors.append(self.triangular_sites[i-1].site_array[j-1])
+                            self.triangular_sites[i-1].site_array[j-1].neighbors.append(self.triangular_sites[i].site_array[j])
         ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
         for i in range(L):
             for j in range(len(self.triangular_sites[i].site_array)):
@@ -432,17 +437,17 @@ class lattice:
                 r_i = sites[i%(L*L)].position
                 r_j = sites[j%(L*L)].position
                 isneighbor =False
-                for bond in self.bond_vectors:
-                    if (r_i-r_j == bond).all() or (r_i-r_j ==-bond).all():
-                        isneighbor=True
-                print(r_i-r_j,isneighbor)
+                if i==j:
+                    Hamiltonian[i,j] = J
+                if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neigbors)).any():
+                    isneighbor=True
                 if isneighbor:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                     actual_bond_size = np.linalg.norm(actual_bond)
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = J_ij
                     Hamiltonian[j,i] = np.conj(J_ij)
-        return Hamiltonian
+        return Hamiltonian*S
       
     def spectral_function(self, Hamiltonian, omega, delta):
         Ny = self.Ny
