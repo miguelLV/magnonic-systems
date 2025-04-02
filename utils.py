@@ -419,7 +419,7 @@ class lattice:
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
-        magnetoelastic_coupling=1000
+        magnetoelastic_coupling=1
         sites = np.zeros(L*L, dtype=site)
         counter=0
         for i in range(L):
