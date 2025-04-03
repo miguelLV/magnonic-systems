@@ -307,6 +307,9 @@ class lattice:
                     pass;
                 else:
                     corrected = eigen[self.Ny+1]
+                    corrected_vec = eigvec[self.Ny+1]
+                    eigvec = np.delete(eigvec,self.Ny+1)
+                    eigvec = np.insert(eigvec,self.Ny,corrected_vec)
                     eigen = np.delete(eigen,self.Ny+1)
                     eigen = np.insert(eigen,self.Ny,corrected)
           if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=tol):
@@ -412,7 +415,7 @@ class lattice:
         x, y=position
         return def_param*np.array([2*x*y,x**2-y**2])
       
-    def set_triangular_hamiltonian(self):
+    def set_triangular_hamiltonian(self,h):
         L=len(self.triangular_sites)
         ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
         cmax = 1/(self.lattice_constant-2*ymax)
@@ -438,7 +441,7 @@ class lattice:
                 r_j = sites[j%(L*L)].position
                 isneighbor =False
                 if i==j:
-                    Hamiltonian[i,j] = 3*J
+                    Hamiltonian[i,j] = 3*J+h
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
                 if isneighbor:
