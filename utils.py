@@ -312,7 +312,7 @@ class lattice:
                     eigvec = np.delete(eigvec,self.Ny+1, axis=0)
                     eigvec = np.insert(eigvec,self.Ny,corrected_vec, axis=0)
                     eigvec = np.delete(eigvec,2*self.Ny+1, axis=0)
-                    eigvec = np.insert(eigvec,2*self.Ny,corrected_vec, axis=0)
+                    eigvec = np.insert(eigvec,2*self.Ny,corrected_vec2, axis=0)
                     eigen = np.delete(eigen,self.Ny+1)
                     eigen = np.insert(eigen,self.Ny,corrected)
           if np.isclose(eigen[self.Ny],eigen[self.Ny-1], atol=tol):
