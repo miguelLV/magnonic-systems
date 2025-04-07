@@ -458,7 +458,7 @@ class lattice:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                     actual_bond_size = np.linalg.norm(actual_bond)
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
-                    Hamiltonian[i,j] = J_ij
+                    Hamiltonian[i,j] = 2*J_ij
                     Hamiltonian[j,i] = np.conj(J_ij)
         return Hamiltonian*S
       
