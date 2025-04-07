@@ -425,7 +425,7 @@ class lattice:
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
-        magnetoelastic_coupling=1
+        magnetoelastic_coupling=1000
         sites = np.zeros(L*L, dtype=site)
         counter=0
         for i in range(L):
@@ -443,7 +443,7 @@ class lattice:
                 isneighbor =False
                 if i==j:
                     r_i = sites[i%(L*L)].position
-                    site_energy = J
+                    site_energy = 2*J
                     for neigh in sites[i%(L*L)].neighbors:
                         r_j = neigh.position
                         actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
