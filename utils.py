@@ -440,14 +440,21 @@ class lattice:
         Hamiltonian = np.zeros([2*L*L,2*L*L], dtype=complex)
         for i in range(2*L*L):
             for j in range(i,2*L*L):
-                r_i = sites[i%(L*L)].position
-                r_j = sites[j%(L*L)].position
                 isneighbor =False
                 if i==j:
-                    Hamiltonian[i,j] = 3*J+h
+                    r_i = sites[i%(L*L)].position
+                    site_energy = J
+                    for neigh in sites[i%(L*L)].neighbors:
+                        r_j = neigh.position
+                        actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
+                        actual_bond_size = np.linalg.norm(actual_bond)
+                        site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
+                    Hamiltonian[i,j] = site_energy
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
-                if isneighbor:
+                if isneighbor and j>=i+L*L:
+                    r_i = sites[i%(L*L)].position
+                    r_j = sites[j%(L*L)].position
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                     actual_bond_size = np.linalg.norm(actual_bond)
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
