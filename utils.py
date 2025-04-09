@@ -453,12 +453,9 @@ class lattice:
                     site_energy = 0
                     for neigh in sites[i%(L*L)].neighbors:
                         r_j = neigh.position
-                        if c==0:
-                            site_energy=site_energy+J
-                        else:
-                            actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
-                            actual_bond_size = np.linalg.norm(actual_bond)
-                            site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
+                        actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
+                        actual_bond_size = np.linalg.norm(actual_bond)
+                        site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = (site_energy+h/S)
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
