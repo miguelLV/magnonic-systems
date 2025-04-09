@@ -336,7 +336,14 @@ class lattice:
     while the y axis of the plot represents the occupation number of magnons.
     '''
 
-
+    def set_band_prob(self,band_index):
+        self.k_probabilities = np.zeros([len(self.kpath_ribbon),2*self.Ny],dtype=np.ndarray)
+        for i,k in enumerate(self.kpath_ribbon):
+            prob = np.zeros(2*self.Ny)
+            U = self.ribbon_eigensystem[i].eigenvectors[:2*self.Ny,:2*self.Ny]
+            V = self.ribbon_eigensystem[i].eigenvectors[2*self.Ny:4*self.Ny,:2*self.Ny]
+            prob = U[:,band_index]*np.conj(U[:,band_index])+V[:,band_index]*np.conj(V[:,band_index])
+            self.k_probabilities[i,band_index]=prob
     def plot_graf_prob(self, k_index, band_index):
       prob = np.zeros(2*self.Ny)
       U = self.ribbon_eigensystem[k_index].eigenvectors[:2*self.Ny,:2*self.Ny]
