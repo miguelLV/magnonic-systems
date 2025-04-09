@@ -432,7 +432,7 @@ class lattice:
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
-        magnetoelastic_coupling=1
+        magnetoelastic_coupling=1000
         sites = np.zeros(L*L, dtype=site)
         counter=0
         for i in range(L):
@@ -454,11 +454,11 @@ class lattice:
                     for neigh in sites[i%(L*L)].neighbors:
                         r_j = neigh.position
                         if c==0:
-                            site_energy=site_energy+2*J
+                            site_energy=site_energy+3*J
                         else:
                             actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                             actual_bond_size = np.linalg.norm(actual_bond)
-                            site_energy = site_energy + 2*J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
+                            site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = (site_energy+h/S)
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
@@ -468,8 +468,8 @@ class lattice:
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                     actual_bond_size = np.linalg.norm(actual_bond)
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
-                    Hamiltonian[i,j] = 2*J_ij
-                    Hamiltonian[j,i] = np.conj(2*J_ij)
+                    Hamiltonian[i,j] = J_ij
+                    Hamiltonian[j,i] = np.conj(J_ij)
         return Hamiltonian*S
       
     def spectral_function(self, Hamiltonian, omega, delta):
