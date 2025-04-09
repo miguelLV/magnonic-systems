@@ -454,7 +454,7 @@ class lattice:
                     for neigh in sites[i%(L*L)].neighbors:
                         r_j = neigh.position
                         if c==0:
-                            site_energy=site_energy+3*J
+                            site_energy=site_energy+J
                         else:
                             actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                             actual_bond_size = np.linalg.norm(actual_bond)
