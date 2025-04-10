@@ -154,7 +154,7 @@ class lattice:
                     if j == 0:
                         self.triangular_sites[i].site_array[j].position = self.triangular_sites[i-1].site_array[0].position + self.bond_vectors[2]-self.bond_vectors[0]
                     else:
-                        self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0]-(j%2+1)*self.bond_vectors[1]
+                        self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j-1].position + (j%2)*self.bond_vectors[0] + (j%2-1)*self.bond_vectors[1]
                         self.triangular_sites[i].site_array[j-1].neighbors.append(self.triangular_sites[i].site_array[j])
                         self.triangular_sites[i].site_array[j].neighbors.append(self.triangular_sites[i].site_array[j-1])
                         if j%2 !=0:
@@ -162,9 +162,8 @@ class lattice:
                             self.triangular_sites[i-1].site_array[j-1].neighbors.append(self.triangular_sites[i].site_array[j])
         ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
         for i in range(L):
-            for j in range(len(self.triangular_sites[i].site_array)):
-                self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j].position+np.array([0,+ymax])
-              
+            for j, row in enumerate(self.triangular_sites[i].site_array):
+                self.triangular_sites[i].site_array[j].position = self.triangular_sites[i].site_array[j].position +np.array([0,ymax/2])
     
     '''
     The print_unitcell method prints in the real space the atoms in the 
@@ -448,6 +447,7 @@ class lattice:
         for i in range(2*L*L):
             for j in range(i,2*L*L):
                 isneighbor =False
+                print(i,j)
                 if i==j:
                     r_i = sites[i%(L*L)].position
                     site_energy = 0
@@ -457,6 +457,7 @@ class lattice:
                         actual_bond_size = np.linalg.norm(actual_bond)
                         site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = (site_energy+h/S)
+                    print(Hamiltonian[i,j],'diag', actual_bond_size)
                 if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
                     isneighbor=True
                 if isneighbor and j>=i+L*L:
@@ -467,6 +468,7 @@ class lattice:
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = J_ij
                     Hamiltonian[j,i] = np.conj(J_ij)
+                    print(Hamiltonian[i,j],'nondiag')
         return Hamiltonian*S
       
     def spectral_function(self, Hamiltonian, omega, delta):
