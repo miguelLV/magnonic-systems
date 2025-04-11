@@ -427,7 +427,7 @@ class lattice:
     def set_triangular_hamiltonian(self,h):
         L=len(self.triangular_sites)
         ymax = abs(self.triangular_sites[L-1].site_array[0].position[1])
-        cmax = 1/(self.lattice_constant-2*ymax)
+        cmax = 0.0000153
         c = self.triaxial_def_param*cmax
         L = len(self.triangular_sites)
         J, S, DMI, Kitaev, GAMMA, h = self.magnetic_constants
@@ -435,40 +435,41 @@ class lattice:
         sites = np.zeros(L*L, dtype=site)
         counter=0
         for i in range(L):
-            if i>0:
-                counter=counter+len(self.triangular_sites[i-1].site_array)-1
             for j in range(len(self.triangular_sites[i].site_array)):
-                index=i+j
-                if i>0:
-                    index=index+counter
-                sites[index] = self.triangular_sites[i].site_array[j]
-                #print(i,',',index,',',sites[index])
-        Hamiltonian = np.zeros([2*L*L,2*L*L], dtype=complex)
-        for i in range(2*L*L):
-            for j in range(i,2*L*L):
+                if self.triangular_sites[i].site_array[j].stype=='A':
+                    sites[counter] = self.triangular_sites[i].site_array[j]
+                    counter=counter+1
+        for i in range(L):
+            for j in range(len(self.triangular_sites[i].site_array)):
+                if self.triangular_sites[i].site_array[j].stype=='B':
+                    sites[counter] = self.triangular_sites[i].site_array[j]
+                    counter=counter+1
+        
+        Hamiltonian = np.zeros([L*L,L*L], dtype=complex)
+        for i in range(L*L):
+            for j in range(i,L*L):
                 isneighbor =False
-                print(i,j)
                 if i==j:
-                    r_i = sites[i%(L*L)].position
+                    r_i = sites[i].position
                     site_energy = 0
-                    for neigh in sites[i%(L*L)].neighbors:
+                    for neigh in sites[i].neighbors:
                         r_j = neigh.position
                         actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
                         actual_bond_size = np.linalg.norm(actual_bond)
                         site_energy = site_energy + J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
-                    Hamiltonian[i,j] = (site_energy+h/S)
-                    print(Hamiltonian[i,j],'diag', actual_bond_size)
-                if (np.isin(sites[i%(L*L)],sites[j%(L*L)].neighbors)).any():
+                    Hamiltonian[i,j] = site_energy
+                    if sites[i].stype=='B':
+                        Hamiltonian[i,j] = Hamiltonian[i,j]
+                if (np.isin(sites[j],sites[i].neighbors)).any():
                     isneighbor=True
-                if isneighbor and j>=i+L*L:
-                    r_i = sites[i%(L*L)].position
-                    r_j = sites[j%(L*L)].position
+                if isneighbor:
+                    r_i = sites[i].position
+                    r_j = sites[j].position
                     actual_bond = r_i+self.displacement(r_i, c)-(r_j+self.displacement(r_j, c))
-                    actual_bond_size = np.linalg.norm(actual_bond)
+                    actual_bond_size = abs(np.linalg.norm(actual_bond))
                     J_ij = J*(1-magnetoelastic_coupling*(actual_bond_size/self.lattice_constant-1))
                     Hamiltonian[i,j] = J_ij
-                    Hamiltonian[j,i] = np.conj(J_ij)
-                    print(Hamiltonian[i,j],'nondiag')
+                    Hamiltonian[j,i] = J_ij
         return Hamiltonian*S
       
     def spectral_function(self, Hamiltonian, omega, delta):
